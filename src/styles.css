@@ -71,6 +71,7 @@ a:hover {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  /* margin-bottom:100px; */
   padding: 0 calc(var(--spacing-unit) * 2);
 }
 

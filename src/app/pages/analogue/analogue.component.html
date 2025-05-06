@@ -1,0 +1,45 @@
+<div class="product-list-container">
+    <div class="container heigt-adjust">
+      <header class="page-header">
+        <app-header></app-header>
+        <h1>Analogue</h1>
+      </header>
+  
+      <div class="filters">
+        <div class="filter-group">
+          <label>Sort By:</label>
+          <select (change)="sortProducts($event)">
+            <option value="name">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="price-low">Price (Low to High)</option>
+            <option value="price-high">Price (High to Low)</option>
+          </select>
+        </div>
+      </div>
+  
+      <div *ngIf="loading" class="loading">
+        <p>Loading products...</p>
+      </div>
+  
+      <div *ngIf="!loading && products.length === 0" class="no-products">
+        <p>No products found...</p>
+        <a routerLink="/all-watch" class="btn btn-primary">View All Watches</a>
+      </div>
+  
+      <div *ngIf="!loading && products.length > 0" class="products-grid">
+        <div *ngFor="let product of products" class="product-card">
+          <div class="product-image" [style.background-image]="'url(' + product.imageUrl[0] + ')'"></div>
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>
+            <span class="product-price">${{ product.price.toFixed(2) }}</span>
+            <div class="product-actions">
+              <a  class="btn btn-primary">View Details</a>
+              <button class="btn btn-secondary">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>

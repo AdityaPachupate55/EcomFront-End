@@ -1,7 +1,8 @@
 <div class="product-list-container">
-  <div class="container">
+  <div class="container heigt-adjust">
     <header class="page-header">
-      <h1>Explore our collection</h1>
+      <app-header></app-header>
+      <h1>Smart</h1>
     </header>
 
     <div class="filters">
@@ -32,12 +33,10 @@
           <h3>{{ product.name }}</h3>
           <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>
           <span class="product-price">${{ product.price.toFixed(2) }}</span>
-
           <div class="product-actions">
             <a  class="btn btn-primary">View Details</a>
             <button class="btn btn-secondary">Add to Cart</button>
           </div>
-
         </div>
       </div>
     </div>
