@@ -1,0 +1,39 @@
+<!-- From Uiverse.io by Rudra-M1 -->
+<div class="form-container">
+  <p class="title">Login</p>
+
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="form">
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="user.email"
+        required
+        class="form-control"
+        placeholder="Enter your email"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        [(ngModel)]="user.password"
+        required
+        class="form-control"
+        placeholder="Enter your password"
+      />
+    </div>
+    <button class="sign" type="submit" [disabled]="!loginForm.form.valid">
+      Sign in
+    </button>
+  </form>
+  <p class="signup">
+    Don't have an account?
+    <a routerLink="/user-register" routerLinkActive="active">Register</a>
+  </p>
+</div>

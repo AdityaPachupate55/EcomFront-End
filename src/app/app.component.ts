@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+// import { ToastComponent } from './components/toast/toast.component';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  baseUrl='https://localhost:7194/api/';
+  baseUrl = 'https://localhost:7194/api/';
   title = 'EcomFrontEnd';
 }

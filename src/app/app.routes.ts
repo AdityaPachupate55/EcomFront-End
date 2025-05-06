@@ -4,12 +4,17 @@ import { DigitalComponent } from './pages/digital/digital.component';
 import {AllWatchComponent} from './pages/all-watch/all-watch.component';
 import { AnalogueComponent } from './pages/analogue/analogue.component';
 import { SmartComponent } from './pages/smart/smart.component';
+import { UserLoginComponent } from './components/user-login/user-login.component';
+import { UserRegisterComponent } from './components/user-register/user-register.component';
 
 export const routes: Routes = [
   {path:'',component:HomeComponent},
+  
   {path:'analogue',component:AnalogueComponent},
   {path:'smart',component:SmartComponent},
   {path:'digital',component:DigitalComponent},
   {path:'all-watch',component:AllWatchComponent},
-  {path: '',redirectTo:'/app-home',pathMatch:'full'}
+  {path:'user-login',component:UserLoginComponent},
+  {path:'user-register',component:UserRegisterComponent},
+  {path: '',redirectTo:'/app-home',pathMatch:'full'},
 ];
