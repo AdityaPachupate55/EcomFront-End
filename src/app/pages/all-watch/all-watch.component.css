@@ -1,0 +1,102 @@
+.product-list-container {
+  padding: calc(var(--spacing-unit) * 4) 0;
+}
+
+.page-header {
+  margin-bottom: calc(var(--spacing-unit) * 4);
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit);
+}
+
+.filter-group select {
+  padding: calc(var(--spacing-unit) * 1);
+  border-radius: var(--border-radius);
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+.loading, .no-products {
+  text-align: center;
+  padding: calc(var(--spacing-unit) * 8) 0;
+}
+
+.no-products p {
+  margin-bottom: calc(var(--spacing-unit) * 3);
+  color: var(--text-secondary);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: calc(var(--spacing-unit) * 3);
+}
+
+.product-card {
+  background-color: var(--background-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+}
+
+.product-info {
+  padding: calc(var(--spacing-unit) * 3);
+}
+
+.product-card h3 {
+  margin-bottom: var(--spacing-unit);
+  font-size: 1.25rem;
+}
+
+.product-category {
+  display: inline-block;
+  background-color: var(--background-light);
+  padding: calc(var(--spacing-unit) * 0.5) var(--spacing-unit);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.product-price {
+  display: block;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+}
+
+@media (max-width: 576px) {
+  .filters {
+    justify-content: center;
+  }
+}

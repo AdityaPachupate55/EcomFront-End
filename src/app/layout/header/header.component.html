@@ -1,0 +1,54 @@
+<header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <a routerLink="/">
+              <h1>WatchLuxe</h1>
+            </a>
+          </div>
+
+          <nav class="main-nav">
+            <ul class="nav-list">
+              <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+              <li class="dropdown">
+                <a>Categories</a>
+                <div class="dropdown-content">
+                  <a routerLink="/casual">Analogue</a>
+                  <a routerLink="/digital">Digital</a>
+                  <a routerLink="/luxury">Luxury</a>
+                </div>
+              </li>
+              <li><a routerLink="/all-watch" routerLinkActive="active">All Watches</a></li>
+            </ul>
+          </nav>
+
+          <div class="user-actions">
+            <a routerLink="/cart" class="cart-icon" routerLinkActive="active">
+              Cart
+              <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+            </a>
+
+            <ng-container *ngIf="isLoggedIn; else loginButton">
+              <div class="dropdown">
+                <button class="dropdown-btn">My Account</button>
+                <div class="dropdown-content">
+                  <a routerLink="/profile">Profile</a>
+                  <a *ngIf="isAdmin" routerLink="/admin">Admin</a>
+                  <a>Logout</a>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #loginButton>
+              <a routerLink="/auth/login" class="btn btn-primary">Login</a>
+            </ng-template>
+          </div>
+
+          <button class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
