@@ -111,6 +111,7 @@ button[type="submit"]:disabled {
   text-decoration: underline;
 }
 
+
 @media (max-width: 640px) {
   .auth-form-container {
     padding: 1.5rem;

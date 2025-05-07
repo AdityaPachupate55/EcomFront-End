@@ -1,0 +1,38 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Admin Login</h2>
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="admin.email" 
+          required 
+          email
+          class="form-control"
+          placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="admin.password" 
+          required 
+          class="form-control"
+          placeholder="Enter your password">
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="!loginForm.form.valid"
+        class="login-button">
+        Login
+      </button>
+    </form>
+  </div>
+</div>

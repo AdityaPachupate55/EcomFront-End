@@ -6,6 +6,7 @@ import { AnalogueComponent } from './pages/analogue/analogue.component';
 import { SmartComponent } from './pages/smart/smart.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 
 export const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -15,6 +16,8 @@ export const routes: Routes = [
   {path:'digital',component:DigitalComponent},
   {path:'all-watch',component:AllWatchComponent},
   {path:'user-login',component:UserLoginComponent},
+  {path:'admin-login',component:AdminLoginComponent},
   {path:'user-register',component:UserRegisterComponent},
+
   {path: '',redirectTo:'/app-home',pathMatch:'full'},
 ];
