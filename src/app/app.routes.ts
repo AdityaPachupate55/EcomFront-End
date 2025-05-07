@@ -8,6 +8,8 @@ import { UserLoginComponent } from './components/user-login/user-login.component
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { CartComponent } from './components/cart/cart.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
 
 export const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -20,6 +22,8 @@ export const routes: Routes = [
   {path:'admin-login',component:AdminLoginComponent},
   {path:'user-register',component:UserRegisterComponent},
   {path:'cart',component:CartComponent},
+  {path:'admin-dashboard',component:AdminComponent},
+  {path:'admin-product-dashboard',component:ProductManagmentComponent},
 
   {path: '',redirectTo:'/app-home',pathMatch:'full'},
 ];

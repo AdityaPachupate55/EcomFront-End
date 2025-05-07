@@ -37,7 +37,7 @@ export class AdminLoginComponent {
         localStorage.setItem('admin_token', token);
         alert('Admin logged in successfully!');
         // Navigate to admin dashboard or home page
-        this.router.navigate(['/']);
+        this.router.navigate(['/admin-dashboard']);
       },
       (error) => {
         console.error('Login failed:', error);

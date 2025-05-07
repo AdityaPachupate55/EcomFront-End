@@ -1,0 +1,76 @@
+<div class="product-management">
+  <div class="container">
+    <header class="page-header">
+      <h1>Product Management</h1>
+      <p>Manage your product inventory here.</p>
+      <a routerLink="/admin-dashboard" class="btn btn-primary">Go to Dashboard</a>
+    </header>
+
+    <div class="management-actions">
+      <button class="btn btn-primary">Add New Product</button>
+
+      <div class="filters">
+        <div class="filter-group">
+          <label>Filter:</label>
+          <select>
+            <option value="all">All Products</option>
+            <option value="active">Active Products</option>
+            <option value="inactive">Inactive Products</option>
+            <option value="low-stock">Low Stock</option>
+          </select>
+        </div>
+
+        <div class="search-box">
+          <input type="text" placeholder="Search products...">
+          <button>Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="products-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>{{ product.id }}</td>
+            <td>
+              <div class="product-image">
+                <img [src]="product.images[0]" [alt]="product.name">
+              </div>
+            </td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>${{ product.price.toFixed(2) }}</td>
+            <td>
+              <span [class.low-stock]="product.stock < 10">
+                {{ product.stock }}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge" [class.active]="product.status === 'ACTIVE'" [class.inactive]="product.status === 'INACTIVE'">
+                {{ product.status }}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon edit">Edit</button>
+                <button class="btn-icon delete">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

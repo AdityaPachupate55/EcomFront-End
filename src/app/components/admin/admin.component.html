@@ -1,0 +1,51 @@
+<div class="admin-dashboard">
+  <div class="container">
+    <header class="page-header">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome to the admin panel. Manage your store here.</p>
+    </header>
+
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <h3>Total Products</h3>
+        <div class="stat-value">6</div>
+        <a routerLink="/admin-product-dashboard" class="stat-link">Manage Products</a>
+      </div>
+
+      <div class="stat-card">
+        <h3>Low Stock Products</h3>
+        <div class="stat-value">7</div>
+        <a routerLink="/admin/products" class="stat-link">View Details</a>
+      </div>
+
+      <div class="stat-card">
+        <h3>Orders</h3>
+        <div class="stat-value">0</div>
+        <a href="#" class="stat-link">View Orders</a>
+      </div>
+
+      <div class="stat-card">
+        <h3>Revenue (Demo)</h3>
+        <div class="stat-value">$0.00</div>
+        <a href="#" class="stat-link">Sales Report</a>
+      </div>
+    </div>
+
+    <div class="dashboard-actions">
+      <div class="action-card">
+        <h3>Quick Actions</h3>
+        <ul class="action-list">
+          <li><a routerLink="/admin-product-dashboard" routerLinkActive="active">Manage Products</a></li>
+          <li><a href="#">Process Orders</a></li>
+          <li><a href="#">Update Inventory</a></li>
+          <li><a href="#">Manage Users</a></li>
+        </ul>
+      </div>
+
+      <div class="action-card">
+        <h3>Recent Activity</h3>
+        <p class="no-activity">No recent activity to display.</p>
+      </div>
+    </div>
+  </div>
+</div>
