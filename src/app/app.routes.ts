@@ -7,10 +7,11 @@ import { SmartComponent } from './pages/smart/smart.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { CartComponent } from './components/cart/cart.component';
 
 export const routes: Routes = [
   {path:'',component:HomeComponent},
-  
+
   {path:'analogue',component:AnalogueComponent},
   {path:'smart',component:SmartComponent},
   {path:'digital',component:DigitalComponent},
@@ -18,6 +19,7 @@ export const routes: Routes = [
   {path:'user-login',component:UserLoginComponent},
   {path:'admin-login',component:AdminLoginComponent},
   {path:'user-register',component:UserRegisterComponent},
+  {path:'cart',component:CartComponent},
 
   {path: '',redirectTo:'/app-home',pathMatch:'full'},
 ];

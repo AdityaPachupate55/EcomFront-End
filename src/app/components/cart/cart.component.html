@@ -1,0 +1,79 @@
+<div class="cart-container">
+  <div class="container">
+    <header class="page-header">
+      <h1>Your Shopping Cart</h1>
+      <p *ngIf="cartItems.length">You have {{ cartItems.length }} item(s) in your cart</p>
+    </header>
+
+    <div *ngIf="cartItems.length === 0" class="empty-cart">
+      <div class="empty-cart-message">
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added any watches to your cart yet.</p>
+        <a routerLink="/" class="btn btn-primary">Start Shopping</a>
+      </div>
+    </div>
+
+    <div *ngIf="cartItems.length > 0" class="cart-content">
+      <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cartItems">
+          <div class="item-image">
+            <img [src]="item.imageUrl[0]" [alt]="item.name">
+          </div>
+
+          <div class="item-details">
+            <h3>{{ item.name }}</h3>
+            <span class="product-category">{{ getCategoryName(item.categoryId) }}</span>
+            <div class="item-price">${{ item.price.toFixed(2) }}</div>
+          </div>
+
+          <div class="item-quantity">
+            <div class="quantity-controls">
+              <button (click)="decreaseQuantity(item)" [disabled]="item.quantity <= 1">-</button>
+              <input type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item)" min="1" [max]="item.stock">
+              <button (click)="increaseQuantity(item)" [disabled]="item.quantity >= item.stock">+</button>
+            </div>
+          </div>
+
+          <div class="item-subtotal">
+            ${{ item.subtotal.toFixed(2) }}
+          </div>
+
+          <button class="remove-item" (click)="removeItem(item)">
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>${{ cartTotal.toFixed(2) }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span>${{ shipping.toFixed(2) }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Tax:</span>
+          <span>${{ tax.toFixed(2) }}</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Total:</span>
+          <span>${{ orderTotal.toFixed(2) }}</span>
+        </div>
+
+        <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+
+        <div class="cart-actions">
+          <a routerLink="/products" class="continue-shopping">Continue Shopping</a>
+          <button class="clear-cart" (click)="clearCart()">Clear Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
