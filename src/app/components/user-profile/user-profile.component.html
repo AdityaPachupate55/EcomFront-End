@@ -1,0 +1,72 @@
+<div class="container-profile">
+    <div class="row-profile">
+        <!-- Left Column -->
+        <div class="col-left">
+            <div class="profile-picture">
+                <img class="profile-image" src="https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-309.jpg" alt="Profile Picture">
+                <span class="profile-name">{{profile.name}}</span>
+                <span class="profile-email">{{profile.email}}</span>
+            </div>  
+        </div>
+
+        <!-- Center Column -->
+        <div class="col-center">
+            <form class="profile-settings" (ngSubmit)="onUpdateProfile()">
+                <h4 class="settings-title">Profile Settings</h4>
+
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" placeholder="Name" [(ngModel)]="profile.name" name="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mobile Number</label>
+                    <input type="text" class="form-input" placeholder="Enter phone number" [(ngModel)]="profile.phone" name="mobileNumber" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email ID</label>
+                    <input type="email" class="form-input" placeholder="Enter email ID" [(ngModel)]="profile.email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Address</label>
+                    <select class="form-input" (change)="setAddress($event)">
+                        <option *ngFor="let address of addresses; let i = index" [value]="i">
+                          {{ address.addressLine1 }}, {{ address.addressLine2 }}
+                        </option>
+                      </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address Line 1</label>
+                    <input type="text" class="form-input" placeholder="Enter address line 1" [(ngModel)]="profile.addressLine1" name="addressLine1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address Line 2</label>
+                    <input type="text" class="form-input" placeholder="Enter address line 2" [(ngModel)]="profile.addressLine2" name="addressLine2">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Postcode</label>
+                    <input type="text" class="form-input" placeholder="Enter postcode" [(ngModel)]="profile.postalCode" name="postcode">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">State</label>
+                    <input type="text" class="form-input" placeholder="Enter state" [(ngModel)]="profile.state" name="state">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Country</label>
+                    <input type="text" class="form-input" placeholder="Country" [(ngModel)]="profile.country" name="country">
+                </div>
+
+                <div class="save-button-container">
+                    <button class="save-button" type="submit">Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

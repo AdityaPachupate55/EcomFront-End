@@ -10,6 +10,7 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { CartComponent } from './components/cart/cart.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 export const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -24,6 +25,7 @@ export const routes: Routes = [
   {path:'cart',component:CartComponent},
   {path:'admin-dashboard',component:AdminComponent},
   {path:'admin-product-dashboard',component:ProductManagmentComponent},
+  {path:'user-profile',component:UserProfileComponent},
 
   {path: '',redirectTo:'/app-home',pathMatch:'full'},
 ];

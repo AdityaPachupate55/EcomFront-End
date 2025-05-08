@@ -1,0 +1,138 @@
+.container-profile {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.row-profile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.col-left,
+.col-center
+{
+    flex: 1;
+    min-width: 300px;
+}
+
+
+
+.profile-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    margin-top:60px;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    margin-bottom: 50px;
+}
+
+.profile-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.profile-email {
+    color: #666;
+    font-size: 14px;
+}
+
+.profile-settings {
+    padding: 20px;
+}
+
+.settings-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.save-button-container {
+    text-align: center;
+    margin-top: 42px;
+}
+
+.save-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+
+body {
+    background: rgb(99, 39, 120);
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8;
+}
+
+.profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none;
+}
+
+.profile-button:hover {
+    background: #682773;
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none;
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none;
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer;
+}
+
+.labels {
+    font-size: 11px;
+}

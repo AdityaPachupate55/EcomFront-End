@@ -10,7 +10,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  isLoggedIn = false;
+  isLoggedIn = true;
   isAdmin = false;
   cartItemCount = 0;
   mobileMenuOpen = false;
