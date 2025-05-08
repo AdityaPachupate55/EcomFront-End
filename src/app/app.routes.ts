@@ -9,7 +9,14 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { CartComponent } from './components/cart/cart.component';
 import { AdminComponent } from './components/admin/admin.component';
+<<<<<<< HEAD
+import { ProductManagementComponent } from './components/admin/product-management/product-management.component';
+
+// import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
+=======
 import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { RoleGuard } from './guards/role.guard';
 
@@ -28,8 +35,14 @@ export const routes: Routes = [
 
   { path: 'cart', component: CartComponent, canActivate: [RoleGuard], data: { role: 'user' } },
 
+
   { path: 'admin-dashboard', component: AdminComponent, canActivate: [RoleGuard], data: { role: 'admin' } },
+
+  {path:'admin-product-dashboard',component:ProductManagementComponent},
+
   { path: 'admin-product-dashboard', component: ProductManagmentComponent, canActivate: [RoleGuard], data: { role: 'admin' } },
+  {path:'user-profile',component:UserProfileComponent},
+
 
   { path: '', redirectTo: '/app-home', pathMatch: 'full' },
 ];

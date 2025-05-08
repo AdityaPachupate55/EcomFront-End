@@ -1,59 +1,179 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-product-managment',
-  imports: [CommonModule, RouterLink],
+  selector: 'app-product-management',
+  imports: [NgFor, NgIf, FormsModule, ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './product-management.component.html',
-  styleUrl: './product-management.component.css'
+  styleUrls: ['./product-management.component.css']
 })
-export class ProductManagmentComponent {
-  products = [
-    {
-      id: 1,
-      images: ['https://via.placeholder.com/50'],
-      name: 'Product A',
-      category: 'Category 1',
-      price: 29.99,
-      stock: 15,
-      status: 'ACTIVE'
-    },
-    {
-      id: 2,
-      images: ['https://via.placeholder.com/50'],
-      name: 'Product B',
-      category: 'Category 2',
-      price: 49.99,
-      stock: 5,
-      status: 'LOW STOCK'
-    },
-    {
-      id: 3,
-      images: ['https://via.placeholder.com/50'],
-      name: 'Product C',
-      category: 'Category 3',
-      price: 19.99,
-      stock: 0,
-      status: 'INACTIVE'
-    },
-    {
-      id: 4,
-      images: ['https://via.placeholder.com/50'],
-      name: 'Product D',
-      category: 'Category 1',
-      price: 99.99,
-      stock: 25,
-      status: 'ACTIVE'
-    },
-    {
-      id: 5,
-      images: ['https://via.placeholder.com/50'],
-      name: 'Product E',
-      category: 'Category 2',
-      price: 39.99,
-      stock: 8,
-      status: 'LOW STOCK'
+export class ProductManagementComponent implements OnInit {
+  products: any[] = [];
+  brands: string[] = [];
+  filteredProducts: any[] = [];
+  searchTerm: string = '';
+  selectedBrand: string = '';
+
+  addProductForm: FormGroup;
+  editProductForm: FormGroup;
+  showAddProductForm: boolean = false; // Control form visibility
+  selectedProduct: any = null; // Track the selected product for editing
+
+  constructor(private http: HttpClient, private fb: FormBuilder) {
+    this.addProductForm = this.fb.group({
+      name: ['', Validators.required],
+      brand: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
+      description: ['', Validators.required],
+      quantity: ['', [Validators.required, Validators.min(0)]]
+    });
+
+    this.editProductForm = this.fb.group({
+      id: [''],
+      name: ['', Validators.required],
+      brand: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
+      description: ['', Validators.required],
+      quantity: ['', [Validators.required, Validators.min(0)]]
+    });
+  }
+
+  ngOnInit() {
+    this.getProducts();
+  }
+
+  getProducts() {
+    this.http.get('https://localhost:7194/api/Product').subscribe(
+      (data: any) => {
+        this.products = data;
+        this.brands = [...new Set(this.products.map(product => product.brand))];
+        this.filteredProducts = this.products;
+        this.filterProducts(); // Ensure filteredProducts is updated
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching products:', error);
+      }
+    );
+  }
+ 
+
+  filterProducts() {
+    this.filteredProducts = this.products.filter(product => {
+      const matchesName = product.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesBrand = this.selectedBrand ? product.brand === this.selectedBrand : true;
+      return matchesName && matchesBrand;
+    });
+  }
+
+  addProduct() {
+    if (this.addProductForm.valid) {
+      const productData = this.addProductForm.value;
+
+      this.http.post('https://localhost:7194/api/Product', productData).subscribe(
+        (data: any) => {
+          console.log('Product added successfully:', data);
+          this.products.push(data);
+          this.showAddProductForm = false;
+          this.addProductForm.reset();
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error adding product:', error);
+          if (error.status === 400) {
+            console.error('Bad Request:', error.error);
+          }
+        }
+      );
     }
-  ];
+  }
+
+  editProduct(product: any) {
+    this.selectedProduct = { ...product }; // Clone the product to avoid direct mutation
+    this.editProductForm.patchValue(this.selectedProduct);
+    this.showAddProductForm = false; // Hide add form when edit form is visible
+  }
+
+  cancelEdit() {
+    this.selectedProduct = null; // Clear the selected product to cancel editing
+  }
+
+  updateProduct() {
+    if (this.editProductForm.valid) {
+      const productData = this.editProductForm.value;
+
+      this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe(
+        (data: any) => {
+          console.log('Product updated:', data); // Add logging
+          const index = this.products.findIndex(p => p.id === productData.id);
+          if (index !== -1) {
+            this.products[index] = data;
+          }
+          this.selectedProduct = null; // Clear selected product after updating
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error updating product:', error);
+        }
+      );
+    }
+  }
+
+  deleteProduct(id: number) {
+    this.http.delete(`https://localhost:7194/api/Product/${id}`).subscribe(
+      () => {
+        this.products = this.products.filter(p => p.id !== id);
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error deleting product:', error);
+      }
+    );
+  }
+
+  getProductsByCategory(event: Event) {
+    const categoryId = (event.target as HTMLSelectElement).value;
+    if (categoryId) {
+      this.http.get(`https://localhost:7194/api/Product/category/${categoryId}`).subscribe(
+        (data: any) => {
+          this.filteredProducts = data;
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error fetching products by category:', error);
+        }
+      );
+    } else {
+      this.filteredProducts = this.products;
+    }
+  }
+
+  getBestSellers(count: number) {
+    this.http.get(`https://localhost:7194/api/Product/bestsellers/${count}`).subscribe(
+      (data: any) => {
+        console.log(data);
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching best sellers:', error);
+      }
+    );
+  }
+
+  searchProducts(term: string) {
+    if (term) {
+      this.filteredProducts = this.products.filter(product =>
+        product.name.toLowerCase().includes(term.toLowerCase()) ||
+        product.brand.toLowerCase().includes(term.toLowerCase()) ||
+        product.description.toLowerCase().includes(term.toLowerCase())
+      );
+    } else {
+      this.filteredProducts = this.products;
+    }
+  }
+
+  onSearchInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      this.searchTerm = inputElement.value;
+      this.searchProducts(this.searchTerm);
+    }
+  }
 }
