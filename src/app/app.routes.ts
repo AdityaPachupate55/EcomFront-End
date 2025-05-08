@@ -25,21 +25,30 @@ export const routes: Routes = [
   { path: 'digital', component: DigitalComponent },
   { path: 'all-watch', component: AllWatchComponent },
   { path: 'product-details/:id', component: ProductDetailsComponent },
-
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
 
-  { path: 'cart', component: CartComponent, canActivate: [RoleGuard], data: { role: 'user' } },
+  {
+    path: 'cart',
+    component: CartComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'user' },
+  },
 
-
-  { path: 'admin-dashboard', component: AdminComponent, canActivate: [RoleGuard], data: { role: 'admin' } },
-
-  {path:'admin-product-dashboard',component:ProductManagementComponent},
-
-  { path: 'admin-product-dashboard', component: ProductManagementComponent, canActivate: [RoleGuard], data: { role: 'admin' } },
-  {path:'user-profile',component:UserProfileComponent},
-
+  {
+    path: 'admin-dashboard',
+    component: AdminComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'admin' },
+  },
+  {
+    path: 'admin-product-dashboard',
+    component: ProductManagementComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'admin' },
+  },
+  { path: 'user-profile', component: UserProfileComponent },
 
   { path: '', redirectTo: '/app-home', pathMatch: 'full' },
 ];

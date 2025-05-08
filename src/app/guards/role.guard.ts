@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -8,9 +8,12 @@ import { AuthService } from '../services/auth.service';
 export class RoleGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(route: any): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data['role']; // Get the expected role from route data
     const userRole = this.authService.userDetails?.role || this.authService.adminDetails?.role;
+
+    console.log('Expected Role:', expectedRole);
+    console.log('User Role:', userRole);
 
     if (userRole === expectedRole) {
       return true; // Allow access if the role matches
