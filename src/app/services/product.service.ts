@@ -27,7 +27,7 @@ export class ProductService {
   private apiUrl = 'https://localhost:7194/api/Product';
 
   categoryMap: { [key: number]: string } = {
-    1: 'Luxury',
+    1: 'Analogue',
     2: 'Casual',
     3: 'Digital'
   };
