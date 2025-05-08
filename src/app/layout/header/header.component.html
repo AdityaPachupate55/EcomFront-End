@@ -34,7 +34,7 @@
             <div class="dropdown-content">
               <a routerLink="/user-profile">Profile</a>
               <a *ngIf="isAdmin" routerLink="/admin">Admin</a>
-              <a>Logout</a>
+              <a (click)="logout()" >Logout</a>
             </div>
           </div>
         </ng-container>

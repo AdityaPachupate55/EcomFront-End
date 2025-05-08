@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 // Define User and Address interfaces
 interface User {
@@ -41,11 +42,12 @@ export class UserProfileComponent implements OnInit {
 
   private userApiUrl = 'https://localhost:7194/api/User'; // Replace with your User API endpoint
   private addressApiUrl = 'https://localhost:7194/api/Address/user'; // Replace with your Address API endpoint
-  private userId = '1'; // Replace with the actual userId (e.g., from route params or auth token)
+  private userId: string = ''; // Placeholder for userId, initialized in ngOnInit
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient , private authService : AuthService) {}
 
   ngOnInit(): void {
+    this.userId = this.authService.userDetails.id; // Initialize userId after authService is available
     this.fetchUserProfile();
   }
 
@@ -94,7 +96,7 @@ export class UserProfileComponent implements OnInit {
   // Set a specific address by index
   setAddress(eventOrIndex: Event | number): void {
     let index: number;
-  
+
     if (typeof eventOrIndex === 'number') {
       // If a number is passed, use it directly as the index
       index = eventOrIndex;
@@ -103,7 +105,7 @@ export class UserProfileComponent implements OnInit {
       const selectElement = eventOrIndex.target as HTMLSelectElement;
       index = parseInt(selectElement.value, 10);
     }
-  
+
     // Validate the index and set the address
     if (index >= 0 && index < this.addresses.length) {
       const address = this.addresses[index];

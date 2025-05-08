@@ -10,6 +10,7 @@ import { Router, RouterModule } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { ProductService, Product as IProduct } from '../../services/product.service';
 import { CartService } from '../../services/cart.service'
+import { HeaderComponent } from "../../layout/header/header.component";
 
 interface Product {
   id: number;
@@ -27,8 +28,8 @@ interface Product {
 @Component({
   selector: 'app-all-watch',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,CommonModule,
-    RouterModule], // Add HttpClientModule here
+  imports: [CommonModule, HttpClientModule, CommonModule,
+    RouterModule, HeaderComponent], // Add HttpClientModule here
   templateUrl: './all-watch.component.html',
   styleUrls: ['./all-watch.component.css'], // Fixed typo: styleUrl -> styleUrls
 })

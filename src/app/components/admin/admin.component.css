@@ -5,6 +5,7 @@
 
 .page-header {
   margin-bottom: calc(var(--spacing-unit) * 4);
+  margin-top: 40px;
 }
 
 .dashboard-stats {

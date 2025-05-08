@@ -1,5 +1,6 @@
 .product-list-container {
   padding: calc(var(--spacing-unit) * 4) 0;
+  margin-top: 60px;
 }
 
 .page-header {

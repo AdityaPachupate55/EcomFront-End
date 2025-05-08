@@ -41,6 +41,9 @@ export class AuthService {
   userDetails: any = null; // Object to store decoded user details
   adminDetails: any = null; // Object to store decoded admin details
 
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false); // Tracks login status
+  isLoggedIn$ = this.isLoggedInSubject.asObservable(); // Observable for components to subscribe
+
   userRegister(){
     this.http.post('https://localhost:7194/api/User/Register', this.user)
       .subscribe({
@@ -73,6 +76,7 @@ export class AuthService {
         this.userDetails = decodeJwtToken(token);
         console.log('Decoded User Details:', this.userDetails);
 
+        this.isLoggedInSubject.next(true); // Update login status
         alert('Login successful!');
         this.router.navigate(['/']);
       },
@@ -95,6 +99,7 @@ export class AuthService {
         this.adminDetails = decodeJwtToken(token);
         console.log('Decoded Admin Details:', this.adminDetails);
 
+        this.isLoggedInSubject.next(true); // Update login status
         alert('Admin logged in successfully!');
         // Navigate to admin dashboard or home page
         this.router.navigate(['/admin-dashboard']);
@@ -104,6 +109,16 @@ export class AuthService {
         alert('Login failed. Please check your credentials.');
       }
     );
+  }
+
+  logout() {
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('admin_token');
+    this.userDetails = null;
+    this.adminDetails = null;
+    this.isLoggedInSubject.next(false); // Update login status
+    alert('Logout successful!');
+    this.router.navigate(['/']);
   }
 
 }
