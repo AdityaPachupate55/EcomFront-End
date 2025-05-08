@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 interface AdminLogin {
   email: string;
@@ -17,6 +18,7 @@ interface AdminLogin {
   styleUrl: './admin-login.component.css'
 })
 export class AdminLoginComponent {
+  
   admin: AdminLogin = {
     email: '',
     password: ''
@@ -24,25 +26,11 @@ export class AdminLoginComponent {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   onSubmit() {
-    // Add responseType: 'text' to handle plain text response
-    this.http.post('https://localhost:7194/api/Auth/adminLogin', this.admin, {
-      responseType: 'text'
-    }).subscribe(
-      (token) => {
-        // Store JWT token in localStorage
-        localStorage.setItem('admin_token', token);
-        alert('Admin logged in successfully!');
-        // Navigate to admin dashboard or home page
-        this.router.navigate(['/admin-dashboard']);
-      },
-      (error) => {
-        console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
-      }
-    );
+    this.authService.adminLogin(this.admin)
   }
 }

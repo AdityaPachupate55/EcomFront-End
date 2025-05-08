@@ -6,7 +6,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { ProductService, Product as IProduct } from '../../services/product.service';
 import { CartService } from '../../services/cart.service'
@@ -27,7 +27,8 @@ interface Product {
 @Component({
   selector: 'app-all-watch',
   standalone: true,
-  imports: [CommonModule, HttpClientModule], // Add HttpClientModule here
+  imports: [CommonModule, HttpClientModule,CommonModule,
+    RouterModule], // Add HttpClientModule here
   templateUrl: './all-watch.component.html',
   styleUrls: ['./all-watch.component.css'], // Fixed typo: styleUrl -> styleUrls
 })
@@ -39,7 +40,7 @@ export class AllWatchComponent implements OnInit {
   categoryTitle="";
 
   categoryMap: { [key: number]: string } = {
-    1: 'Digital', 
+    1: 'Digital',
     2: 'Analogue',
     3: 'Smart',
   };
@@ -115,7 +116,11 @@ export class AllWatchComponent implements OnInit {
 
   addToCart(product: Product): void {
     this.cartService.addToCart(product, 1);
-    alert(`${product.name} added to cart!`);
+    alert(`${product.id} added to cart!`);
+  }
+
+  sample(id:any):void{
+    alert(id);
   }
 
   getCategoryName(categoryId: number): string {

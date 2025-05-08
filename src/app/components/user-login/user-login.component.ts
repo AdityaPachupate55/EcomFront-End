@@ -3,16 +3,16 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 interface UserLogin {
   email: string;
   password: string;
 }
 
-
 @Component({
   selector: 'app-user-login',
-  imports: [CommonModule,FormsModule,RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.css'
 })
@@ -24,21 +24,11 @@ export class UserLoginComponent {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   onSubmit() {
-    this.http.post('https://localhost:7194/api/Auth/userLogin', this.user, {
-      responseType: 'text'
-    }).subscribe(
-      (token) => {
-        localStorage.setItem('user_token', token);
-        alert('Login successful!');
-        this.router.navigate(['/']);      },
-      (error) => {
-        console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
-      }
-    );
+    this.authService.userLogin(this.user);
   }
 }

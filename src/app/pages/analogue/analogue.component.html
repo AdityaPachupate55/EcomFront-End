@@ -34,7 +34,7 @@
             <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>
             <span class="product-price">${{ product.price.toFixed(2) }}</span>
             <div class="product-actions">
-              <a  class="btn btn-primary">View Details</a>
+              <a routerLink="/product-details" class="btn btn-primary">View Details</a>
               <button (click)="addToCart(product)" class="btn btn-secondary">Add to Cart</button>
             </div>
           </div>

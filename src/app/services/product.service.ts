@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
 
 export interface Product {
+  // stock: number;
   id: number;
   name: string;
   brand: string;
@@ -26,11 +27,7 @@ export class ProductService {
 
   private apiUrl = 'https://localhost:7194/api/Product';
 
-  categoryMap: { [key: number]: string } = {
-    1: 'Analogue',
-    2: 'Casual',
-    3: 'Digital'
-  };
+
 
   constructor(
     private http: HttpClient,
@@ -62,18 +59,24 @@ export class ProductService {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-  getProductById(id: number): Observable<Product | undefined> {
-    return this.getAllProducts().pipe(
-      map(products => products.find(product => product.id === id))
-    );
+  getProductById(id: number): Observable<Product> {
+    const headers = this.getHeaders();
+    return this.http.get<Product>(`${this.apiUrl}/${id}`, { headers })
+      .pipe(catchError(this.handleError.bind(this)));
   }
+
+
 
   getProductsByCategory(categoryId: number): Observable<Product[]> {
     const headers = this.getHeaders();
     return this.http.get<Product[]>(`${this.apiUrl}/category/${categoryId}`, { headers })
       .pipe(catchError(this.handleError.bind(this)));
   }
-
+  categoryMap: { [key: number]: string } = {
+    1: 'Digital',
+    2: 'Analogue',
+    3: 'Smart'
+  };
   getCategoryName(categoryId: number): string {
     return this.categoryMap[categoryId] || 'Unknown';
   }

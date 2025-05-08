@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -24,32 +25,16 @@ export class UserRegisterComponent {
     email: '',
     password: '',
     phone: ''
-  }; 
+  };
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   onSubmit() {
-    this.http.post('https://localhost:7194/api/User/Register', this.user)
-      .subscribe({
-        next: (response) => {
-          console.log('Registration successful', response);
-          // Reset form after successful registration
-          this.user = {
-            name: '',
-            email: '',
-            password: '',
-            phone: ''
-          };
-          alert('Registration successful!');
-          this.router.navigate(['/user-login']); // Add navigation to login
-        },
-        error: (error) => {
-          console.error('Registration failed', error);
-          alert('Registration failed. Please try again.');
-        }
-      });
+    this.authService.user = this.user;
+    this.authService.userRegister();
   }
 }
