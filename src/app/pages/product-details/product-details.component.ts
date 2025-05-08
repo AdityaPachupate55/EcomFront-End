@@ -8,7 +8,7 @@ import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
-  imports: [FormsModule, CommonModule, RouterLink],
+  imports: [FormsModule, CommonModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })

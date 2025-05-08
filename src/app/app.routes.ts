@@ -9,12 +9,9 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { CartComponent } from './components/cart/cart.component';
 import { AdminComponent } from './components/admin/admin.component';
-<<<<<<< HEAD
+
 import { ProductManagementComponent } from './components/admin/product-management/product-management.component';
 
-// import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
-=======
-import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
@@ -40,7 +37,7 @@ export const routes: Routes = [
 
   {path:'admin-product-dashboard',component:ProductManagementComponent},
 
-  { path: 'admin-product-dashboard', component: ProductManagmentComponent, canActivate: [RoleGuard], data: { role: 'admin' } },
+  { path: 'admin-product-dashboard', component: ProductManagementComponent, canActivate: [RoleGuard], data: { role: 'admin' } },
   {path:'user-profile',component:UserProfileComponent},
 
 
