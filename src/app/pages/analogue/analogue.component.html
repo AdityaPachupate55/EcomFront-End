@@ -4,7 +4,7 @@
         <app-header></app-header>
         <h1>Analogue</h1>
       </header>
-  
+
       <div class="filters">
         <div class="filter-group">
           <label>Sort By:</label>
@@ -16,16 +16,16 @@
           </select>
         </div>
       </div>
-  
+
       <div *ngIf="loading" class="loading">
         <p>Loading products...</p>
       </div>
-  
+
       <div *ngIf="!loading && products.length === 0" class="no-products">
         <p>No products found...</p>
         <a routerLink="/all-watch" class="btn btn-primary">View All Watches</a>
       </div>
-  
+
       <div *ngIf="!loading && products.length > 0" class="products-grid">
         <div *ngFor="let product of products" class="product-card">
           <div class="product-image" [style.background-image]="'url(' + product.imageUrl[0] + ')'"></div>
@@ -35,11 +35,11 @@
             <span class="product-price">${{ product.price.toFixed(2) }}</span>
             <div class="product-actions">
               <a  class="btn btn-primary">View Details</a>
-              <button class="btn btn-secondary">Add to Cart</button>
+              <button (click)="addToCart(product)" class="btn btn-secondary">Add to Cart</button>
             </div>
           </div>
         </div>
       </div>
-  
+
     </div>
   </div>

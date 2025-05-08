@@ -73,11 +73,11 @@ export class CartComponent {
   }
 
   categoryMap: { [key: number]: string } = {
-    1: 'Luxury',
+    1: 'Analogue',
     2: 'Casual',
     3: 'Digital'
   };
-  
+
   getCategoryName(categoryId: number): string {
     return this.categoryMap[categoryId] || 'Unknown';
   }

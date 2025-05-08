@@ -9,9 +9,14 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { CartComponent } from './components/cart/cart.component';
 import { AdminComponent } from './components/admin/admin.component';
+<<<<<<< HEAD
 import { ProductManagementComponent } from './components/admin/product-management/product-management.component';
 
 // import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
+=======
+import { ProductManagmentComponent } from './components/admin/product-management/product-management.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+>>>>>>> 271f07d9cd9c23764bfdb2cde0606b4bc7cfbf72
 
 export const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -26,7 +31,12 @@ export const routes: Routes = [
   {path:'cart',component:CartComponent},
 
   {path:'admin-dashboard',component:AdminComponent},
+<<<<<<< HEAD
   {path:'admin-product-dashboard',component:ProductManagementComponent},
+=======
+  {path:'admin-product-dashboard',component:ProductManagmentComponent},
+  {path:'user-profile',component:UserProfileComponent},
+>>>>>>> 271f07d9cd9c23764bfdb2cde0606b4bc7cfbf72
 
   {path: '',redirectTo:'/app-home',pathMatch:'full'},
 ];

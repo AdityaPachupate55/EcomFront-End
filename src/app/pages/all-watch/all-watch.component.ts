@@ -8,6 +8,8 @@ import {
 } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { ProductService, Product as IProduct } from '../../services/product.service';
+import { CartService } from '../../services/cart.service'
 
 interface Product {
   id: number;
@@ -37,12 +39,19 @@ export class AllWatchComponent implements OnInit {
   categoryTitle="";
 
   categoryMap: { [key: number]: string } = {
-    1: 'Luxury',
-    2: 'Casual',
-    3: 'Digital'
+    1: 'Digital', 
+    2: 'Analogue',
+    3: 'Smart',
   };
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private IproductService: ProductService,
+    private cartService: CartService,
+    // private route: ActivatedRoute
+
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -93,15 +102,20 @@ export class AllWatchComponent implements OnInit {
     target.onerror = null; // Prevent infinite loop if the fallback image also fails
   }
 
-  onAddToCart(productId: number) {
-    const token = localStorage.getItem('user_token');
-    if (!token) {
-      alert('Please login to add items to cart');
-      this.router.navigate(['/login']);
-      return;
-    }
+  // onAddToCart(productId: number) {
+  //   const token = localStorage.getItem('user_token');
+  //   if (!token) {
+  //     alert('Please login to add items to cart');
+  //     this.router.navigate(['/login']);
+  //     return;
+  //   }
 
-    console.log('Product added to cart, ID:', productId);
+  //   console.log('Product added to cart, ID:', productId);
+  // }
+
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product, 1);
+    alert(`${product.name} added to cart!`);
   }
 
   getCategoryName(categoryId: number): string {
