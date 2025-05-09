@@ -1,0 +1,108 @@
+<!-- <div class="cart-management">
+    <div class="container">
+      <header class="page-header">
+        <h1>Cart Management</h1>
+        <p>Manage your cart details here.</p>
+        <a routerLink="/admin-dashboard" class="btn btn-primary">Go to Dashboard</a>
+      </header>
+  
+      <div class="management-actions">
+        <div class="filters">
+          <div class="filter-group">
+            <label>Filter:</label>
+            <select>
+              <option value="all">All Cart Items</option>
+              <option value="active">Active Cart Items</option>
+            </select>
+          </div>
+  
+          <div class="search-box">
+            <input type="text" placeholder="Search cart items...">
+            <button>Search</button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="cart-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Cart Item ID</th>
+              <th>Product ID</th>
+              <th>User ID</th>
+              <th>Quantity</th>
+              <th>Is Active</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cartItem of activeCartItems">
+              <td>{{ cartItem.cartItemID }}</td>
+              <td>{{ cartItem.productId }}</td>
+              <td>{{ cartItem.userId }}</td>
+              <td>{{ cartItem.quantity }}</td>
+              <td>{{ cartItem.isActive ? 'Yes' : 'No' }}</td>
+              <td>{{ cartItem.createdAt | date: 'short' }}</td>
+              <td>{{ cartItem.updatedAt | date: 'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="cart-management">
+    <div class="container">
+      <header class="page-header">
+        <h1>Cart Management</h1>
+        <a routerLink="/admin-dashboard" class="btn btn-primary">Go to Dashboard</a>
+      </header>
+  
+      <div class="management-actions">
+        <!-- <button class="btn btn-primary">Add New Cart Item</button> -->
+  
+        <div class="filters">
+          <div class="filter-group">
+            <label>Filter:</label>
+            <select>
+              <option value="all">All Cart Items</option>
+              <option value="active">Active Cart Items</option>
+            </select>
+          </div>
+  
+          <div class="search-box">
+            <input type="text" placeholder="Search cart items...">
+            <button>Search</button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="cart-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Cart Item ID</th>
+              <th>Product ID</th>
+              <th>User ID</th>
+              <th>Quantity</th>
+              <th>Is Active</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cartItem of activeCartItems">
+              <td>{{ cartItem.cartItemID }}</td>
+              <td>{{ cartItem.productId }}</td>
+              <td>{{ cartItem.userId }}</td>
+              <td>{{ cartItem.quantity }}</td>
+              <td>{{ cartItem.isActive ? 'Yes' : 'No' }}</td>
+              <td>{{ cartItem.createdAt | date: 'short' }}</td>
+              <td>{{ cartItem.updatedAt | date: 'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

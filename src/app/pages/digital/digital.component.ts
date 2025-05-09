@@ -11,6 +11,7 @@ import { catchError, throwError } from 'rxjs';
 import { HeaderComponent } from "../../layout/header/header.component";
 import { ProductService, Product as IProduct } from '../../services/product.service';
 import { CartService } from '../../services/cart.service'
+import { FooterComponent } from "../../layout/footer/footer.component";
 
 interface Product {
   id: number;
@@ -29,7 +30,7 @@ interface Product {
 
 @Component({
   selector: 'app-digital',
-  imports: [CommonModule,HeaderComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './digital.component.html',
   styleUrl: './digital.component.css'
 })

@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Product } from './product.service';
 import { catchError } from 'rxjs/operators';
 
-
 export interface CartItem extends Product {
   quantity: number;
   subtotal: number;
@@ -71,7 +70,7 @@ export class CartService {
     }
   }
 
-  private updateStorage(cart: CartItem[]): void {
+  private saveCartToStorage(cart: CartItem[]): void {
     localStorage.setItem('cart', JSON.stringify(cart));
     this.cartSubject.next(cart);
   }
@@ -107,7 +106,7 @@ export class CartService {
       updatedCart = [...currentCart, newItem];
     }
 
-    this.updateStorage(updatedCart);
+    this.saveCartToStorage(updatedCart);
 
     // Sync with backend
     // this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
@@ -116,12 +115,6 @@ export class CartService {
   }
 
   updateQuantity(productId: number, quantity: number): void {
-    const headers = this.getHeaders();
-    if (quantity <= 0) {
-      this.removeFromCart(productId);
-      return;
-    }
-
     const currentCart = this.cartSubject.value;
     const updatedCart = currentCart.map(item =>
       item.id === productId
@@ -133,36 +126,19 @@ export class CartService {
         : item
     );
 
-    this.updateStorage(updatedCart);
-
-    // // Sync with backend
-    // // this.http.put(`${this.apiUrl}/update`, { productId, quantity }, { headers })
-    // //   .pipe(catchError(this.handleError.bind(this)))
-    // //   .subscribe();
+    this.saveCartToStorage(updatedCart);
   }
 
   removeFromCart(productId: number): void {
-    const headers = this.getHeaders();
     const currentCart = this.cartSubject.value;
     const updatedCart = currentCart.filter(item => item.id !== productId);
 
-    this.updateStorage(updatedCart);
-
-    // Sync with backend
-    this.http.delete(`${this.apiUrl}/remove/${productId}`, { headers })
-      .pipe(catchError(this.handleError.bind(this)))
-      .subscribe();
+    this.saveCartToStorage(updatedCart);
   }
 
   clearCart(): void {
-    const headers = this.getHeaders();
     localStorage.removeItem('cart');
     this.cartSubject.next([]);
-
-    // Sync with backend
-    this.http.delete(`${this.apiUrl}/clear`, { headers })
-      .pipe(catchError(this.handleError.bind(this)))
-      .subscribe();
   }
 
   getCartTotal(): number {
@@ -174,7 +150,10 @@ export class CartService {
   }
 
   syncWithServer(): Observable<CartItem[]> {
-    const headers = this.getHeaders();
+    const token = localStorage.getItem('user_token');
+    if (!token) return throwError(() => 'User not logged in');
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<CartItem[]>(`${this.apiUrl}`, { headers })
       .pipe(catchError(this.handleError.bind(this)));
   } 

@@ -3,51 +3,73 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { FooterComponent } from "../../layout/footer/footer.component";
+import { HeaderComponent } from "../../layout/header/header.component";
 
 // Define User and Address interfaces
 interface User {
+  userId: number;
   name: string;
   phone: string;
   email: string;
 }
 
 interface Address {
+  addressId: number;
+  userId: number;
   addressLine1: string;
   addressLine2: string;
-  postalCode: string;
+  city: string;
   state: string;
+  postalCode: string;
   country: string;
 }
 
 @Component({
   selector: 'app-user-profile',
-  imports:[FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule, FooterComponent, HeaderComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-
 export class UserProfileComponent implements OnInit {
+
   profile = {
     name: '',
     phone: '',
     email: '',
     addressLine1: '',
     addressLine2: '',
+    city: '',
     postalCode: '',
     state: '',
     country: ''
   };
 
   addresses: Address[] = []; // Store all addresses here
-
   private userApiUrl = 'https://localhost:7194/api/User'; // Replace with your User API endpoint
   private addressApiUrl = 'https://localhost:7194/api/Address/user'; // Replace with your Address API endpoint
-  private userId: string = ''; // Placeholder for userId, initialized in ngOnInit
+  private addressRegisterApiUrl = 'https://localhost:7194/api/Address'; // API endpoint for registering a new address
+  private addressUpdateApiUrl = 'https://localhost:7194/api/Address'; // API endpoint for updating an address
 
-  constructor(private http: HttpClient , private authService : AuthService) {}
+  private selectedAddressId: number = 0;
+  private userId: string = ''; // Placeholder for userId, initialized in ngOnInit
+  isAddAddressModalVisible = false; // Modal visibility state
+
+  newAddress = {
+    userId: 0,
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    postalCode: '',
+    state: '',
+    country: ''
+  };
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.userId = this.authService.userDetails.id; // Initialize userId after authService is available
+    this.newAddress.userId = parseInt(this.userId, 10); // Automatically assign userId for new address
     this.fetchUserProfile();
   }
 
@@ -98,31 +120,72 @@ export class UserProfileComponent implements OnInit {
     let index: number;
 
     if (typeof eventOrIndex === 'number') {
-      // If a number is passed, use it directly as the index
       index = eventOrIndex;
     } else {
-      // If an Event is passed, extract the value from the select element
       const selectElement = eventOrIndex.target as HTMLSelectElement;
       index = parseInt(selectElement.value, 10);
     }
 
-    // Validate the index and set the address
     if (index >= 0 && index < this.addresses.length) {
       const address = this.addresses[index];
+      this.selectedAddressId = address.addressId;
       this.profile.addressLine1 = address.addressLine1;
       this.profile.addressLine2 = address.addressLine2;
+      this.profile.city = address.city;
       this.profile.postalCode = address.postalCode;
       this.profile.state = address.state;
       this.profile.country = address.country;
-    } else {
-      console.warn('Invalid address index:', index);
     }
   }
 
-
-  // Handle form submission
+  // Handle form submission for updating an address
   onUpdateProfile(): void {
-    console.log('Updated Profile:', this.profile);
-    // Add logic to send updated data to the backend
+    const updatedAddress = {
+      addressId: this.selectedAddressId,
+      userId: parseInt(this.userId, 10),
+      addressLine1: this.profile.addressLine1,
+      addressLine2: this.profile.addressLine2,
+      city: this.profile.city,
+      state: this.profile.state,
+      postalCode: this.profile.postalCode,
+      country: this.profile.country
+    };
+
+    this.http.put(`${this.addressUpdateApiUrl}/${updatedAddress.addressId}`, updatedAddress).subscribe({
+      next: (response) => {
+        console.log('Address updated successfully:', response);
+        alert('Address updated successfully!');
+      },
+      error: (error) => {
+        console.error('Error updating address:', error);
+        alert('Failed to update address. Please try again.');
+      }
+    });
+  }
+
+  // Show the modal for adding a new address
+  showAddAddressForm(): void {
+    this.isAddAddressModalVisible = true;
+  }
+
+  // Hide the modal for adding a new address
+  hideAddAddressForm(): void {
+    this.isAddAddressModalVisible = false;
+  }
+
+  // Handle form submission for adding a new address
+  onSubmitNewAddress(): void {
+    this.http.post(this.addressRegisterApiUrl, this.newAddress).subscribe({
+      next: (response) => {
+        console.log('New address added successfully:', response);
+        alert('New address added successfully!');
+        this.hideAddAddressForm();
+        this.fetchUserProfile(); // Refresh the address list
+      },
+      error: (error) => {
+        console.error('Error adding new address:', error);
+        alert('Failed to add new address. Please try again.');
+      }
+    });
   }
 }

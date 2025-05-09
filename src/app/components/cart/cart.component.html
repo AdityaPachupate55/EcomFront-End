@@ -31,7 +31,7 @@
 
           <div class="item-quantity">
             <div class="quantity-controls">
-              <button (click)="decreaseQuantity(item)">-</button>
+              <button (click)="decreaseQuantity(item)" >-</button>
               <input type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item)" min="1" [max]="item.stock">
               <button (click)="increaseQuantity(item)" >+</button>
             </div>

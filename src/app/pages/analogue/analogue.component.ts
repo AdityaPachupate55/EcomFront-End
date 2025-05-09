@@ -14,6 +14,7 @@ import {
   Product as IProduct,
 } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import { FooterComponent } from '../../layout/footer/footer.component';
 
 interface Product {
   id: number;
@@ -30,7 +31,7 @@ interface Product {
 
 @Component({
   selector: 'app-analogue',
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent,FooterComponent],
   templateUrl: './analogue.component.html',
   styleUrl: './analogue.component.css',
 })

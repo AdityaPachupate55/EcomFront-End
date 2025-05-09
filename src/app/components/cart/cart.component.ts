@@ -11,7 +11,7 @@ import { HeaderComponent } from "../../layout/header/header.component";
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   cartTotal = 0;
   shipping = 10.00;
@@ -39,7 +39,7 @@ export class CartComponent {
   }
 
   increaseQuantity(item: CartItem): void {
-    if (item.quantity < item.stock) {
+    if (item.quantity < (item.stock || 99)) { // Default max stock if not specified
       this.cartService.updateQuantity(item.id, item.quantity + 1);
     }
   }
@@ -54,8 +54,8 @@ export class CartComponent {
     // Ensure quantity is within bounds
     if (item.quantity < 1) {
       item.quantity = 1;
-    } else if (item.quantity > item.stock) {
-      item.quantity = item.stock;
+    } else if (item.quantity > (item.stock || 99)) {
+      item.quantity = item.stock || 99;
     }
 
     this.cartService.updateQuantity(item.id, item.quantity);
