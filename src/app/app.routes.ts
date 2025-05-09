@@ -17,6 +17,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { RoleGuard } from './guards/role.guard';
 import { OrderDetailsComponent } from './components/admin/order-details/order-details.component';
+import { CartdetailsComponent } from './components/admin/cartdetails/cartdetails.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,7 +30,7 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
-  {path: 'order-details',component:OrderDetailsComponent},
+   {path: 'order-details',component:OrderDetailsComponent},
   {
     path: 'cart',
     component: CartComponent,
@@ -50,6 +51,6 @@ export const routes: Routes = [
     data: { role: 'admin' },
   },
   { path: 'user-profile', component: UserProfileComponent },
-
+  {path:'cart-details',component:CartdetailsComponent},
   { path: '', redirectTo: '/app-home', pathMatch: 'full' },
 ];
