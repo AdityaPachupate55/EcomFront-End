@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service'
+import { HeaderComponent } from "../../layout/header/header.component";
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, HeaderComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })

@@ -1,6 +1,9 @@
 .cart-container {
   padding: calc(var(--spacing-unit) * 4) 0;
 }
+.cart-header{
+  margin-top: 40px;
+}
 
 .page-header {
   margin-bottom: calc(var(--spacing-unit) * 4);
