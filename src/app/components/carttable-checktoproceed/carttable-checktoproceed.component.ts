@@ -94,5 +94,16 @@ export class CarttableChecktoproceedComponent implements OnInit {
         }
       });
     });
+  } 
+  getSubtotal(): number {
+    return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  }  
+  getTotal(): number {
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  } 
+  confirmOrder(): void {
+    // Logic to confirm the order
+    console.log('Order confirmed!');
   }
+
 }

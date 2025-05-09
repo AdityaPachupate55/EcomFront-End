@@ -21,3 +21,34 @@
         </div>
       </div>
     </div>
+
+    <!-- Order Summary Section -->
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <div class="summary-details">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>${{getSubtotal().toFixed(2)}}</span>
+        </div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span>${{getTotal().toFixed(2)}}</span>
+        </div>
+      </div>
+    </div> 
+
+
+    <!-- <div class="order-actions">
+      <button class="btn-shipping" (click)="openShippingForm()">
+        <i class="fas fa-shipping-fast"></i>
+        Shipping Address
+      </button> 
+    -->
+    <div class="order-actions">
+      <button class="btn-confirm" (click)="confirmOrder()" >
+        <i class="fas fa-check-circle"></i>
+        Confirm Order
+      </button>
+    </div>
+  </div>
+</div>

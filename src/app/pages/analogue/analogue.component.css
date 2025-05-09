@@ -1,105 +1,137 @@
-.product-list-container {
-
-  padding: calc(var(--spacing-unit) * 4) 0;
-}
-.heigt-adjust{
-  margin-top: 40px;
-}
-.page-header {
-  margin-bottom: calc(var(--spacing-unit) * 4);
-  text-align: center;
-}
-
-.filters {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: calc(var(--spacing-unit) * 4);
-}
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-unit);
-}
-
-.filter-group select {
-  padding: calc(var(--spacing-unit) * 1);
-  border-radius: var(--border-radius);
-  border: 1px solid #ccc;
-  background-color: white;
-  font-size: 0.9rem;
-}
-
-.loading, .no-products {
-  text-align: center;
-  padding: calc(var(--spacing-unit) * 8) 0;
-}
-
-.no-products p {
-  margin-bottom: calc(var(--spacing-unit) * 3);
-  color: var(--text-secondary);
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: calc(var(--spacing-unit) * 3);
-}
-
 .product-card {
-  background-color: var(--background-white);
-  border-radius: var(--border-radius);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
 }
 
 .product-image {
-  height: 250px;
-  background-size: cover;
-  background-position: center;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .product-info {
-  padding: calc(var(--spacing-unit) * 3);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.product-card h3 {
-  margin-bottom: var(--spacing-unit);
-  font-size: 1.25rem;
+.product-info h3 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin: 0.5rem 0;
 }
 
 .product-category {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  background: #f7f9fc;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
   display: inline-block;
-  background-color: var(--background-light);
-  padding: calc(var(--spacing-unit) * 0.5) var(--spacing-unit);
-  border-radius: var(--border-radius);
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin-bottom: calc(var(--spacing-unit) * 2);
+  margin-bottom: 0.5rem;
 }
 
 .product-price {
-  display: block;
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: var(--primary-color);
-  margin-bottom: calc(var(--spacing-unit) * 2);
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: bold;
+  margin: 0.5rem 0;
 }
 
 .product-actions {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit);
+  gap: 0.75rem;
+  margin-top: auto;
 }
 
-@media (max-width: 576px) {
-  .filters {
-    justify-content: center;
+.btn.btn-primary {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn.btn-primary:first-child {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.btn.btn-primary:last-child {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: 1400px;
+}
+
+/* Sort dropdown styling */
+.filter-group {
+  margin: 1rem 2rem;
+}
+
+.filter-group label {
+  margin-right: 1rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.filter-group select {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  color: #2c3e50;
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .product-image {
+    height: 250px;
+  }
+
+  .product-info h3 {
+    font-size: 1.25rem;
   }
 }
