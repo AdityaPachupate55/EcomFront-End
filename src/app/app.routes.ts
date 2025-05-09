@@ -34,8 +34,6 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
-    canActivate: [RoleGuard],
-    data: { role: 'user' },
   },
 
   {
