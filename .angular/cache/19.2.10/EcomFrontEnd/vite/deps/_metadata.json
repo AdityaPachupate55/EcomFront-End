@@ -1,8 +1,8 @@
 {
-  "hash": "73224383",
-  "configHash": "a2363ecc",
+  "hash": "2344f8f1",
+  "configHash": "dc61df3a",
   "lockfileHash": "522121e1",
-  "browserHash": "0331846a",
+  "browserHash": "5338a5c7",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
@@ -66,8 +66,8 @@
     "chunk-DHSY247K": {
       "file": "chunk-DHSY247K.js"
     },
-    "chunk-KVLE3IXC": {
-      "file": "chunk-KVLE3IXC.js"
+    "chunk-CPN5WQDT": {
+      "file": "chunk-CPN5WQDT.js"
     },
     "chunk-FFZIAYYX": {
       "file": "chunk-FFZIAYYX.js"

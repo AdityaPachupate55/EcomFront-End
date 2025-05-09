@@ -1,0 +1,23 @@
+<div class="order-container">
+  <div class="order-header">
+    <h1>Order Review</h1>
+  </div>
+
+  <div class="order-content">
+    <!-- Product Details Section -->
+    <div class="products-section">
+      <h2>Order Items</h2>
+      <div class="product-list">
+        <div class="product-item" *ngFor="let item of cartItems">
+          <div class="product-image">
+            <img [src]="item.imageUrl" [alt]="item.name">
+          </div>
+          <div class="product-info">
+            <h3>{{item.name}}</h3>
+            <p class="product-price">${{item.price.toFixed(2)}}</p>
+            <p class="product-quantity">Quantity: {{item.quantity}}</p>
+            <p class="product-subtotal">Subtotal: ${{(item.price * item.quantity).toFixed(2)}}</p>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -83,3 +83,6 @@ export class CartComponent implements OnInit {
     return this.categoryMap[categoryId] || 'Unknown';
   }
 }
+
+
+

@@ -10,6 +10,17 @@ export interface CartItem extends Product {
   subtotal: number;
   stock: number;
 }
+export interface CartPostItem {
+  cartItemID: number;
+  productId: number;
+  userId: number;
+  quantity: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  totalPrice: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +59,14 @@ export class CartService {
   private loadCartFromStorage(): void {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
-      this.cartSubject.next(JSON.parse(storedCart));
+      try {
+        this.cartSubject.next(JSON.parse(storedCart));
+      } catch (error) {
+        console.error('Failed to parse cart from storage:', error);
+        this.cartSubject.next([]); // Fallback to an empty cart
+      }
+    } else {
+      this.cartSubject.next([]); // Ensure cart is initialized as an empty array
     }
   }
 
@@ -91,9 +109,9 @@ export class CartService {
     this.saveCartToStorage(updatedCart);
 
     // Sync with backend
-    this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
-      .pipe(catchError(this.handleError.bind(this)))
-      .subscribe();
+    // this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
+    //   .pipe(catchError(this.handleError.bind(this)))
+    //   .subscribe();
   }
 
   updateQuantity(productId: number, quantity: number): void {
@@ -138,5 +156,66 @@ export class CartService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<CartItem[]>(`${this.apiUrl}`, { headers })
       .pipe(catchError(this.handleError.bind(this)));
+  } 
+
+
+  postCartItems(items: CartPostItem[]): Observable<any> {
+    const token = localStorage.getItem('user_token');
+    if (!token) {
+      return throwError(() => 'No authentication token found');
+    }
+  
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  
+    // Validate the cart item before sending
+    if (!this.validateCartItem(items[0])) {
+      return throwError(() => 'Invalid cart data');
+    }
+  
+    // Log the exact payload being sent
+    console.log('Sending payload:', JSON.stringify(items[0], null, 2));
+  
+    // Format the data to match the API expectations
+    const cartData = {
+      cartItemId: 0,
+      productId: items[0].productId,
+      userId: items[0].userId,
+      quantity: items[0].quantity,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      totalPrice: items[0].totalPrice
+    };
+  
+    return this.http.post(this.apiUrl, cartData, { headers })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('API Error:', error);
+          if (error.status === 400) {
+            console.error('Validation errors:', error.error?.errors);
+            return throwError(() => 'Invalid cart data format: ' + JSON.stringify(error.error?.errors));
+          } else if (error.status === 401) {
+            this.router.navigate(['/login']);
+            return throwError(() => 'Please login again');
+          } else if (error.status === 403) {
+            return throwError(() => 'Access denied');
+          }
+          return throwError(() => 'An error occurred while processing your request');
+        })
+      );
+  }
+  
+  private validateCartItem(item: CartPostItem): boolean {
+    if (!item) return false;
+  
+    return (
+      typeof item.productId === 'number' && item.productId > 0 &&
+      typeof item.userId === 'number' && item.userId > 0 &&
+      typeof item.quantity === 'number' && item.quantity > 0 &&
+      typeof item.totalPrice === 'number' && item.totalPrice >= 0
+    );
   }
 }
