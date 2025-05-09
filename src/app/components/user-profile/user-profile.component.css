@@ -53,11 +53,13 @@ body {
     border-collapse: collapse;
     margin-top: 20px;
     font-size: 16px;
+    border-radius: 30px;
+    overflow: hidden;
 }
 
 .user-details-table th,
 .user-details-table td {
-    padding: 12px 15px;
+    padding: 18px 21px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -131,7 +133,7 @@ body {
     border: none;
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin: 5px;
@@ -162,7 +164,7 @@ body {
 .modal-content {
     background-color: #ffffff;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 20px;
     width: 400px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     text-align: center;
@@ -188,7 +190,7 @@ body {
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 20px;
 }
 
 .modal-content .save-button-container {
@@ -196,13 +198,13 @@ body {
 }
 
 .modal-content .save-button {
-    width: 100%;
+    width: 60%;
     padding: 10px;
     font-size: 16px;
     background-color: #6a11cb;
     color: #ffffff;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
