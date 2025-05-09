@@ -16,6 +16,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { RoleGuard } from './guards/role.guard';
+import { OrderDetailsComponent } from './components/admin/order-details/order-details.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,7 +29,7 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
-
+  {path: 'order-details',component:OrderDetailsComponent},
   {
     path: 'cart',
     component: CartComponent,
