@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { FooterComponent } from "../../layout/footer/footer.component";
+import { HeaderComponent } from "../../layout/header/header.component";
 
 // Define User and Address interfaces
 interface User {
@@ -21,7 +23,7 @@ interface Address {
 
 @Component({
   selector: 'app-user-profile',
-  imports:[FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule, FooterComponent, HeaderComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })

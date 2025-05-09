@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="container-profile">
     <div class="row-profile">
         <!-- Left Column -->
@@ -6,7 +7,7 @@
                 <img class="profile-image" src="https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-309.jpg" alt="Profile Picture">
                 <span class="profile-name">{{profile.name}}</span>
                 <span class="profile-email">{{profile.email}}</span>
-            </div>  
+            </div>
         </div>
 
         <!-- Center Column -->
@@ -47,12 +48,12 @@
                     <label class="form-label">Address Line 2</label>
                     <input type="text" class="form-input" placeholder="Enter address line 2" [(ngModel)]="profile.addressLine2" name="addressLine2">
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Postcode</label>
                     <input type="text" class="form-input" placeholder="Enter postcode" [(ngModel)]="profile.postalCode" name="postcode">
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">State</label>
                     <input type="text" class="form-input" placeholder="Enter state" [(ngModel)]="profile.state" name="state">
@@ -70,3 +71,4 @@
         </div>
     </div>
 </div>
+<app-footer></app-footer>

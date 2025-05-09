@@ -11,6 +11,7 @@ import { catchError, throwError } from 'rxjs';
 import { HeaderComponent } from "../../layout/header/header.component";
 import { ProductService, Product as IProduct } from '../../services/product.service';
 import { CartService } from '../../services/cart.service'
+import { FooterComponent } from "../../layout/footer/footer.component";
 
 interface Product {
   id: number;
@@ -29,7 +30,7 @@ interface Product {
 
 @Component({
   selector: 'app-smart',
-  imports: [CommonModule,HeaderComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './smart.component.html',
   styleUrl: './smart.component.css'
 })
@@ -40,7 +41,7 @@ export class SmartComponent {
         categoryTitle="";
 
         categoryMap: { [key: number]: string } = {
-          1: 'Digital', 
+          1: 'Digital',
           2: 'Analogue',
           3: 'Smart',
         };
