@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Product } from './product.service';
 import { catchError } from 'rxjs/operators';
 
+
 export interface CartItem extends Product {
   quantity: number;
   subtotal: number;

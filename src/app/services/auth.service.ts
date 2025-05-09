@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { decodeJwtToken } from '../utils/jwt-utils';
+import { CartService } from './cart.service';
 
 interface UserRegister {
   name: string;
@@ -28,7 +29,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) {}
 
   user : UserRegister = {
@@ -116,7 +118,8 @@ export class AuthService {
     localStorage.removeItem('admin_token');
     this.userDetails = null;
     this.adminDetails = null;
-    this.isLoggedInSubject.next(false); // Update login status
+    this.isLoggedInSubject.next(false);
+    this.cartService.clearCart(); // Clear the cart on logout
     alert('Logout successful!');
     this.router.navigate(['/']);
   }
