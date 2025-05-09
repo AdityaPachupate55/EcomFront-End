@@ -83,3 +83,6 @@ export class CartComponent {
     return this.categoryMap[categoryId] || 'Unknown';
   }
 }
+
+
+

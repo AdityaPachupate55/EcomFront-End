@@ -16,10 +16,12 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { RoleGuard } from './guards/role.guard';
+import { CarttableChecktoproceedComponent } from './components/carttable-checktoproceed/carttable-checktoproceed.component';
+import { CarttablectpComponent } from './components/carttablectp/carttablectp.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-
+ 
   { path: 'analogue', component: AnalogueComponent },
   { path: 'smart', component: SmartComponent },
   { path: 'digital', component: DigitalComponent },
@@ -28,7 +30,10 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
-
+  {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent}, 
+  {
+    path:'app-carttablectp' , component:CarttablectpComponent
+  },
   {
     path: 'cart',
     component: CartComponent,
