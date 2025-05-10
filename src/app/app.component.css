@@ -142,6 +142,8 @@ a:hover {
   outline: none;
 }
 
+
+
 /* Responsive breakpoints */
 @media (max-width: 576px) {
   h1 {

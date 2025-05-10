@@ -119,6 +119,10 @@
   cursor: pointer;
 }
 
+.product-list-container{
+  margin-top: 100px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .products-grid {
