@@ -50,7 +50,13 @@ export class CartService {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       try {
-      this.cartSubject.next(JSON.parse(storedCart));
+        this.cartSubject.next(JSON.parse(storedCart));
+      } catch (error) {
+        console.error('Failed to parse cart from storage:', error);
+        this.cartSubject.next([]); // Fallback to an empty cart
+      }
+    } else {
+      this.cartSubject.next([]); // Ensure cart is initialized as an empty array
     }
   }
 
@@ -93,9 +99,9 @@ export class CartService {
     this.updateStorage(updatedCart);
 
     // Sync with backend
-    this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
-      .pipe(catchError(this.handleError.bind(this)))
-      .subscribe();
+    // this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
+    //   .pipe(catchError(this.handleError.bind(this)))
+    //   .subscribe();
   }
 
   updateQuantity(productId: number, quantity: number): void {

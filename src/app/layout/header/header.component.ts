@@ -1,7 +1,9 @@
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -35,12 +37,12 @@ export class HeaderComponent {
     this.cartService.cart$.subscribe(cart => {
       this.cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
     });
-  }
-
-  logout() {
+    }
+  
+    logout() {
     this.authService.logout(); // Call logout from AuthService
   }
-
+  
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }

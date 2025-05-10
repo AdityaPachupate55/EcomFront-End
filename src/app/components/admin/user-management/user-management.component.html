@@ -1,0 +1,39 @@
+<div class="user-management">
+    <div class="container">
+      <header class="page-header">
+        <h1>User Management</h1>
+        <a routerLink="/admin-dashboard" class="btn btn-primary">Go to Dashboard</a>
+      </header>
+  
+      <div class="management-actions">
+        <input type="text" placeholder="Search by name" [(ngModel)]="searchTerm" (input)="filterUsers()" class="search-input">
+       
+      </div>
+  
+      <div class="users-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsers">
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-icon delete" (click)="deleteUser(user.id)">Delete</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
