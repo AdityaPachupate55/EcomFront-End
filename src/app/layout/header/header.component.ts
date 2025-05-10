@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 
@@ -11,6 +10,9 @@ import { CartService } from '../../services/cart.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
+
+
 export class HeaderComponent {
   isLoggedIn = false; // Default to false
   isAdmin = false;

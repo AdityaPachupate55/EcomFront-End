@@ -16,6 +16,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { RoleGuard } from './guards/role.guard';
+import { UserManagementComponent } from './components/admin/user-management/user-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,6 +29,9 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
+  {
+    path:'admin-user-dashboard', component:UserManagementComponent
+  },
 
   {
     path: 'cart',

@@ -78,6 +78,7 @@ export class ProductManagementComponent implements OnInit {
           this.products.push(data);
           this.showAddProductForm = false;
           this.addProductForm.reset();
+          this.refreshProductList(); // Refresh the product list
         },
         (error: HttpErrorResponse) => {
           console.error('Error adding product:', error);
@@ -88,6 +89,24 @@ export class ProductManagementComponent implements OnInit {
       );
     }
   }
+
+
+  // for refereshing the form
+  
+refreshProductList() {
+    // Fetch the updated list of products from the server or update the local list
+    this.http.get('https://localhost:7194/api/Product').subscribe(
+      (data: any) => {
+        this.products = data;
+        this.filteredProducts = this.products;
+        this.filterProducts(); // Ensure filteredProducts is updated
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching products:', error);
+      }
+    );
+  }
+  
 
   editProduct(product: any) {
     this.selectedProduct = { ...product }; // Clone the product to avoid direct mutation
@@ -111,6 +130,7 @@ export class ProductManagementComponent implements OnInit {
             this.products[index] = data;
           }
           this.selectedProduct = null; // Clear selected product after updating
+          this.refreshProductList(); // Refresh the product list
         },
         (error: HttpErrorResponse) => {
           console.error('Error updating product:', error);
@@ -123,6 +143,7 @@ export class ProductManagementComponent implements OnInit {
     this.http.delete(`https://localhost:7194/api/Product/${id}`).subscribe(
       () => {
         this.products = this.products.filter(p => p.id !== id);
+        this.refreshProductList(); // Refresh the product list
       },
       (error: HttpErrorResponse) => {
         console.error('Error deleting product:', error);

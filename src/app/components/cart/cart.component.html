@@ -20,13 +20,13 @@
       <div class="cart-items">
         <div class="cart-item" *ngFor="let item of cartItems">
           <div class="item-image">
-            <img [src]="item.imageUrl[0]" [alt]="item.name">
+            <img [src]="item.imageUrl" [alt]="item.name">
           </div>
 
           <div class="item-details">
             <h3>{{ item.name }}</h3>
             <!-- <span class="product-category">{{ getCategoryName(item.categoryId) }}</span> -->
-            <div class="item-price">${{ item.price.toFixed(2) }}</div>
+            <div class="item-price">{{ item.price.toFixed(2) }}</div>
           </div>
 
           <div class="item-quantity">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="item-subtotal">
-            ${{ item.subtotal.toFixed(2) }}
+            {{ item.subtotal.toFixed(2) }}
           </div>
 
           <button class="remove-item" (click)="removeItem(item)">
@@ -52,22 +52,22 @@
 
         <div class="summary-row">
           <span>Subtotal:</span>
-          <span>${{ cartTotal.toFixed(2) }}</span>
+          <span>{{ cartTotal.toFixed(2) }}</span>
         </div>
 
         <div class="summary-row">
           <span>Shipping:</span>
-          <span>${{ shipping.toFixed(2) }}</span>
+          <span>{{ shipping.toFixed(2) }}</span>
         </div>
 
         <div class="summary-row">
           <span>Tax:</span>
-          <span>${{ tax.toFixed(2) }}</span>
+          <span>{{ tax.toFixed(2) }}</span>
         </div>
 
         <div class="summary-total">
           <span>Total:</span>
-          <span>${{ orderTotal.toFixed(2) }}</span>
+          <span>{{ orderTotal.toFixed(2) }}</span>
         </div>
 
         <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
