@@ -37,104 +37,112 @@ interface Product {
 })
 export class SmartComponent {
   products: Product[] = [];
-        loading: boolean = false;
-        error: string | null = null;
-        categoryTitle="";
+  loading: boolean = false;
+  error: string | null = null;
+  categoryTitle="";
 
-        categoryMap: { [key: number]: string } = {
-          1: 'Digital',
-          2: 'Analogue',
-          3: 'Smart',
-        };
+  categoryMap: { [key: number]: string } = {
+    1: 'Digital',
+    2: 'Analogue',
+    3: 'Smart',
+  };
 
-        constructor(private http: HttpClient, private router: Router,private IproductService: ProductService,
-          private cartService: CartService) {}
+  constructor(private http: HttpClient, private router: Router,private IproductService: ProductService,
+    private cartService: CartService) {}
 
-        ngOnInit() {
-          this.loadProducts();
-        }
+  ngOnInit() {
+    this.loadProducts();
+  }
 
-        private getHeaders(): HttpHeaders {
-          const token = localStorage.getItem('user_token');
-          if (!token) {
-            this.router.navigate(['/login']);
-            return new HttpHeaders();
-          }
-          return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        }
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('user_token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return new HttpHeaders();
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 
-        private handleError(error: HttpErrorResponse) {
-          let errorMessage = 'An error occurred';
-          if (error.status === 401) {
-            errorMessage = 'Session expired. Please login again';
-            localStorage.removeItem('user_token');
-            this.router.navigate(['/login']);
-          }
-          return throwError(() => errorMessage);
-        }
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An error occurred';
+    if (error.status === 401) {
+      errorMessage = 'Session expired. Please login again';
+      localStorage.removeItem('user_token');
+      this.router.navigate(['/login']);
+    }
+    return throwError(() => errorMessage);
+  }
 
-        loadProducts() {
-          this.loading = true;
-          const headers = this.getHeaders();
+  loadProducts() {
+    this.loading = true;
+    const headers = this.getHeaders();
 
-          this.http
-            .get<Product[]>('https://localhost:7194/api/Product?category=3', { headers })
-            .pipe(catchError(this.handleError.bind(this)))
-            .subscribe({
-              next: (data) => {
-                this.products = data;
-                this.loading = false;
-              },
-              error: (errorMessage) => {
-                console.error('Error loading products:', errorMessage);
-                this.error = errorMessage;
-                this.loading = false;
-              },
-            });
-        }
+    this.http
+      .get<Product[]>('https://localhost:7194/api/Product?category=3', { headers })
+      .pipe(catchError(this.handleError.bind(this)))
+      .subscribe({
+        next: (data) => {
+          this.products = data;
+          this.loading = false;
+        },
+        error: (errorMessage) => {
+          console.error('Error loading products:', errorMessage);
+          this.error = errorMessage;
+          this.loading = false;
+        },
+      });
+  }
 
-        onImageError(event: Event): void {
-          const target = event.target as HTMLImageElement;
-          target.src = 'assets/images/default-product-image.jpg'; // Correct path to the fallback image
-          target.onerror = null; // Prevent infinite loop if the fallback image also fails
-        }
+  onImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/images/default-product-image.jpg'; // Correct path to the fallback image
+    target.onerror = null; // Prevent infinite loop if the fallback image also fails
+  }
 
-        // onAddToCart(productId: number) {
-        //   const token = localStorage.getItem('user_token');
-        //   if (!token) {
-        //     alert('Please login to add items to cart');
-        //     this.router.navigate(['/login']);
-        //     return;
-        //   }
+  // onAddToCart(productId: number) {
+  //   const token = localStorage.getItem('user_token');
+  //   if (!token) {
+  //     alert('Please login to add items to cart');
+  //     this.router.navigate(['/login']);
+  //     return;
+  //   }
 
-        //   console.log('Product added to cart, ID:', productId);
-        // }
+  //   console.log('Product added to cart, ID:', productId);
+  // }
 
-        addToCart(product: Product): void {
-          this.cartService.addToCart(product, 1);
-          alert(`${product.name} added to cart!`);
-        }
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product, 1);
+    alert(`${product.name} added to cart!`);
+  }
 
-        getCategoryName(categoryId: number): string {
-          return this.categoryMap[categoryId] || 'Unknown';
-        }
+  getCategoryName(categoryId: number): string {
+    return this.categoryMap[categoryId] || 'Unknown';
+  }
 
-        sortProducts(event: Event): void {
-          const sortBy = (event.target as HTMLSelectElement).value;
+  sortProducts(event: Event): void {
+    const sortBy = (event.target as HTMLSelectElement).value;
 
-          switch (sortBy) {
-            case 'name':
-              this.products.sort((a, b) => a.name.localeCompare(b.name));
-              break;
-            case 'name-desc':
-              this.products.sort((a, b) => b.name.localeCompare(a.name));
-              break;
-            case 'price-low':
-              this.products.sort((a, b) => a.price - b.price);
-              break;
-            case 'price-high':
-              this.products.sort((a, b) => b.price - a.price);
-              break;
-          }
-        }
+    switch (sortBy) {
+      case 'name':
+        this.products.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        this.products.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'price-low':
+        this.products.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        this.products.sort((a, b) => b.price - a.price);
+        break;
+    }
+  }
+
+  truncateName(name: string, wordLimit: number = 4): string {
+    const words = name.split(' ');
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return name;
+  }
 }

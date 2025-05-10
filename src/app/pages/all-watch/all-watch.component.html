@@ -32,7 +32,7 @@
           <img *ngIf="product.imageUrl" [src]="product.imageUrl.startsWith('http') ? product.imageUrl : 'https://localhost:7194/' + product.imageUrl.replace('wwwroot/', '')" alt="{{ product.name }}">
         </div>
         <div class="product-info">
-          <h3>{{ product.name }}</h3>
+          <h3>{{ truncateName(product.name) }}</h3>
           <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>
           <span class="product-price">{{ product.price.toFixed(2) }}</span>
 

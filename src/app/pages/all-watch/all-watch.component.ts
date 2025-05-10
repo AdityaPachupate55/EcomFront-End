@@ -141,4 +141,12 @@ export class AllWatchComponent implements OnInit {
         break;
     }
   }
+
+  truncateName(name: string, wordLimit: number = 4): string {
+    const words = name.split(' ');
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(' ') + '...';
+    }
+    return name;
+  }
 }
