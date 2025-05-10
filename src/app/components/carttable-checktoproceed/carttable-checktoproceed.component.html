@@ -14,9 +14,9 @@
           </div>
           <div class="product-info">
             <h3>{{item.name}}</h3>
-            <p class="product-price">${{item.price.toFixed(2)}}</p>
+            <p class="product-price">{{item.price.toFixed(2)}}</p>
             <p class="product-quantity">Quantity: {{item.quantity}}</p>
-            <p class="product-subtotal">Subtotal: ${{(item.price * item.quantity).toFixed(2)}}</p>
+            <p class="product-subtotal">Subtotal: {{(item.price * item.quantity).toFixed(2)}}</p>
           </div>
         </div>
       </div>
@@ -28,11 +28,11 @@
       <div class="summary-details">
         <div class="summary-row">
           <span>Subtotal</span>
-          <span>${{getSubtotal().toFixed(2)}}</span>
+          <span>{{getSubtotal().toFixed(2)}}</span>
         </div>
         <div class="summary-total">
           <span>Total</span>
-          <span>${{getTotal().toFixed(2)}}</span>
+          <span>{{getTotal().toFixed(2)}}</span>
         </div>
       </div>
     </div> 
