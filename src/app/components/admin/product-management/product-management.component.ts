@@ -17,6 +17,14 @@ export class ProductManagementComponent implements OnInit {
   searchTerm: string = '';
   selectedBrand: string = '';
   selectedFile: File | null = null;
+  
+categoryMap: { [key: number]: string } = {
+      1: 'Digital',
+      2: 'Analogue',
+      3: 'Smart',
+    };
+    categoryKeys: number[] = Object.keys(this.categoryMap).map(Number);
+  
 
   addProductForm: FormGroup;
   editProductForm: FormGroup;
@@ -29,17 +37,22 @@ export class ProductManagementComponent implements OnInit {
       brand: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(0)]]
+      quantity: ['', [Validators.required, Validators.min(0)]],
+      categoryId: ['', Validators.required],
+      subCategoryId: ['', Validators.required]
     });
-
+    
     this.editProductForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
       brand: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(0)]]
+      quantity: ['', [Validators.required, Validators.min(0)]],
+      categoryId: ['', Validators.required],
+      subCategoryId: ['', Validators.required]
     });
+    
   }
 
   ngOnInit() {
@@ -78,7 +91,7 @@ export class ProductManagementComponent implements OnInit {
   addProduct() {
     if (this.addProductForm.valid) {
       const productData = this.addProductForm.value;
-
+  
       this.http.post('https://localhost:7194/api/Product', productData).subscribe(
         (data: any) => {
           console.log('Product added successfully:', data);
@@ -86,7 +99,7 @@ export class ProductManagementComponent implements OnInit {
           this.showAddProductForm = false;
           this.addProductForm.reset();
           this.refreshProductList(); // Refresh the product list
-
+  
           // Upload the image if selected
           if (this.selectedFile) {
             this.uploadProductImage(data.id);
@@ -101,11 +114,12 @@ export class ProductManagementComponent implements OnInit {
       );
     }
   }
+  
 
   updateProduct() {
     if (this.editProductForm.valid) {
       const productData = this.editProductForm.value;
-
+  
       this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe(
         (data: any) => {
           console.log('Product updated successfully:', data); // Add logging
@@ -115,7 +129,7 @@ export class ProductManagementComponent implements OnInit {
           }
           this.selectedProduct = null; // Clear selected product after updating
           this.refreshProductList(); // Refresh the product list
-
+  
           // Upload the image if selected
           if (this.selectedFile) {
             this.uploadProductImage(productData.id);
@@ -127,6 +141,7 @@ export class ProductManagementComponent implements OnInit {
       );
     }
   }
+  
 
   uploadProductImage(productId: number) {
     const formData = new FormData();

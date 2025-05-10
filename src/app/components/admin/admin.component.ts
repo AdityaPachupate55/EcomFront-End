@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-admin',
-  imports: [RouterLink, HeaderComponent],
+  imports: [RouterLink],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
