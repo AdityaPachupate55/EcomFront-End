@@ -29,10 +29,8 @@
     <div *ngIf="!loading && products.length > 0" class="products-grid">
       <div *ngFor="let product of products" class="product-card">
         <div class="product-image">
-          <img [src]="product.imageUrl" [alt]="product.name" 
-               onerror="this.src='assets/images/placeholder.jpg'">
+          <img *ngIf="product.imageUrl" [src]="product.imageUrl.startsWith('http') ? product.imageUrl : 'https://localhost:7194/' + product.imageUrl.replace('wwwroot/', '')" alt="{{ product.name }}">
         </div>
-        <div class="product-image" [style.background-image]="'url(' + product.imageUrl + ')'"></div>
         <div class="product-info">
           <h3>{{ product.name }}</h3>
           <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>

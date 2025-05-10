@@ -20,7 +20,7 @@
       <div class="cart-items">
         <div class="cart-item" *ngFor="let item of cartItems">
           <div class="item-image">
-            <img [src]="item.imageUrl" [alt]="item.name">
+            <img *ngIf="item.imageUrl" [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://localhost:7194/' + item.imageUrl.replace('wwwroot/', '')" alt="{{ item.name }}">
           </div>
 
           <div class="item-details">
