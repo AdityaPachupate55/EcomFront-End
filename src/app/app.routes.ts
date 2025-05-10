@@ -30,6 +30,7 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
+  { path: 'product-details/:id', component: ProductDetailsComponent },
   {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent},  
   {
     path:'admin-user-dashboard', component:UserManagementComponent
