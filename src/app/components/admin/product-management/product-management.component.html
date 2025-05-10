@@ -54,10 +54,23 @@
             Quantity must be a positive number.
           </div>
         </div>
+        <div class="form-group">
+          <label for="category">Category:</label>
+          <select id="category" formControlName="categoryId" class="custom-select"  required>
+            <option *ngFor="let key of categoryKeys" [value]="key">{{ categoryMap[key] }}</option>
+          </select>
+        </div>
+       
+        <div class="form-group">
+          <label for="image">Image:</label>
+          <input type="file" id="image" (change)="onFileSelected($event)">
+        </div>
         <button type="submit" class="btn btn-primary">Add Product</button>
         <button type="button" class="btn btn-secondary" (click)="showAddProductForm = false">Cancel</button>
       </form>
     </div>
+    
+    
 
     <!-- Edit Product Form -->
     <div *ngIf="selectedProduct" class="edit-product-form">
@@ -98,10 +111,23 @@
             Quantity must be a positive number.
           </div>
         </div>
+        <div class="form-group">
+          <label for="edit-category">Category:</label>
+          <select id="edit-category" formControlName="categoryId" class="custom-select" required>
+            <option *ngFor="let key of categoryKeys" [value]="key">{{ categoryMap[key] }}</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="edit-image">Image:</label>
+          <input type="file" id="edit-image" (change)="onFileSelected($event)">
+        </div>
         <button type="submit" class="btn btn-primary">Update Product</button>
         <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
       </form>
     </div>
+    
+    
 
     <div class="products-table">
       <table>
@@ -113,7 +139,8 @@
             <th>Price</th>
             <th>Description</th>
             <th>Quantity</th>
-            <!-- <th>CategoryId</th> -->
+            <th>Category</th> 
+            
 
             <th>Actions</th>
           </tr>
@@ -122,7 +149,7 @@
           <tr *ngFor="let product of filteredProducts">
             <td>
               <div class="product-image">
-                <img src="https://media.rolex.com/image/upload/q_auto:eco/f_auto/t_v7-grid/c_limit,w_3840/v1/catalogue/2025/upright-bba-with-shadow/m126234-0051" [alt]="product.name">
+                <img *ngIf="product.imageUrl" [src]="product.imageUrl.startsWith('http') ? product.imageUrl : 'https://localhost:7194/' + product.imageUrl.replace('wwwroot/', '')" alt="{{ product.name }}">
               </div>
             </td>
             <td>{{ product.name }}</td>
@@ -130,7 +157,8 @@
             <td>{{ product.price.toFixed(2) }}</td>
             <td>{{ product.description }}</td>
             <td>{{ product.quantity }}</td>
-            <!-- <td>{{ product.CategoryId }}</td> -->
+            <td>{{ categoryMap[product.categoryId] }}</td> <!-- Display category -->
+            
 
             <td>
               <div class="action-buttons">

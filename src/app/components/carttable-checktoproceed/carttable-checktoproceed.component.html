@@ -10,7 +10,7 @@
       <div class="product-list">
         <div class="product-item" *ngFor="let item of cartItems">
           <div class="product-image">
-            <img [src]="item.imageUrl" [alt]="item.name">
+            <img *ngIf="item.imageUrl" [src]="item.imageUrl.startsWith('http') ? item.imageUrl : 'https://localhost:7194/' + item.imageUrl.replace('wwwroot/', '')" alt="{{ item.name }}">
           </div>
           <div class="product-info">
             <h3>{{item.name}}</h3>
@@ -35,15 +35,16 @@
           <span>{{getTotal().toFixed(2)}}</span>
         </div>
       </div>
-    </div> 
+    </div>
 
 
     <!-- <div class="order-actions">
       <button class="btn-shipping" (click)="openShippingForm()">
         <i class="fas fa-shipping-fast"></i>
         Shipping Address
-      </button> 
+      </button>
     -->
+  
     <div class="order-actions">
       <button class="btn-confirm" (click)="confirmOrder()" >
         <i class="fas fa-check-circle"></i>
