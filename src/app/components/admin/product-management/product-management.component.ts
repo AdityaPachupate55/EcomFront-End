@@ -16,6 +16,14 @@ export class ProductManagementComponent implements OnInit {
   filteredProducts: any[] = [];
   searchTerm: string = '';
   selectedBrand: string = '';
+  selectedFile: File | null = null;
+
+  categoryMap: { [key: number]: string } = {
+    1: 'Digital',
+    2: 'Analogue',
+    3: 'Smart',
+  };
+  categoryKeys: number[] = Object.keys(this.categoryMap).map(Number);
 
   addProductForm: FormGroup;
   editProductForm: FormGroup;
@@ -28,7 +36,8 @@ export class ProductManagementComponent implements OnInit {
       brand: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(0)]]
+      quantity: ['', [Validators.required, Validators.min(0)]],
+      categoryId: ['', Validators.required]
     });
 
     this.editProductForm = this.fb.group({
@@ -37,7 +46,8 @@ export class ProductManagementComponent implements OnInit {
       brand: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(0)]]
+      quantity: ['', [Validators.required, Validators.min(0)]],
+      categoryId: ['', Validators.required]
     });
   }
 
@@ -58,7 +68,6 @@ export class ProductManagementComponent implements OnInit {
       }
     );
   }
- 
 
   filterProducts() {
     this.filteredProducts = this.products.filter(product => {
@@ -66,6 +75,13 @@ export class ProductManagementComponent implements OnInit {
       const matchesBrand = this.selectedBrand ? product.brand === this.selectedBrand : true;
       return matchesName && matchesBrand;
     });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 
   addProduct() {
@@ -79,6 +95,11 @@ export class ProductManagementComponent implements OnInit {
           this.showAddProductForm = false;
           this.addProductForm.reset();
           this.refreshProductList(); // Refresh the product list
+
+          // Upload the image if selected
+          if (this.selectedFile) {
+            this.uploadProductImage(data.id);
+          }
         },
         (error: HttpErrorResponse) => {
           console.error('Error adding product:', error);
@@ -90,23 +111,60 @@ export class ProductManagementComponent implements OnInit {
     }
   }
 
+  updateProduct() {
+    if (this.editProductForm.valid) {
+      const productData = this.editProductForm.value;
 
-  // for refereshing the form
-  
-refreshProductList() {
-    // Fetch the updated list of products from the server or update the local list
-    this.http.get('https://localhost:7194/api/Product').subscribe(
-      (data: any) => {
-        this.products = data;
-        this.filteredProducts = this.products;
-        this.filterProducts(); // Ensure filteredProducts is updated
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error fetching products:', error);
-      }
-    );
+      this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe(
+        (data: any) => {
+          console.log('Product updated successfully:', data); // Add logging
+          const index = this.products.findIndex(p => p.id === productData.id);
+          if (index !== -1) {
+            this.products[index] = data;
+          }
+          this.selectedProduct = null; // Clear selected product after updating
+          this.refreshProductList(); // Refresh the product list
+
+          // Upload the image if selected
+          if (this.selectedFile) {
+            this.uploadProductImage(productData.id);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error updating product:', error);
+        }
+      );
+    }
   }
-  
+
+  uploadProductImage(productId: number) {
+    const formData = new FormData();
+    formData.append('file', this.selectedFile!);
+
+    this.http.post(`https://localhost:7194/api/ProductImage/${productId}/upload`, formData).subscribe(
+      (data: any) => {
+        console.log('Product image uploaded successfully:', data);
+        this.selectedFile = null; // Clear selected file after upload
+        this.refreshProductList(); // Refresh the product list
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error uploading product image:', error);
+      }
+    );
+  }
+
+  refreshProductList() {
+    this.http.get('https://localhost:7194/api/Product').subscribe(
+      (data: any) => {
+        this.products = data;
+        this.filteredProducts = this.products;
+        this.filterProducts(); // Ensure filteredProducts is updated
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching products:', error);
+      }
+    );
+  }
 
   editProduct(product: any) {
     this.selectedProduct = { ...product }; // Clone the product to avoid direct mutation
@@ -116,27 +174,6 @@ refreshProductList() {
 
   cancelEdit() {
     this.selectedProduct = null; // Clear the selected product to cancel editing
-  }
-
-  updateProduct() {
-    if (this.editProductForm.valid) {
-      const productData = this.editProductForm.value;
-
-      this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe(
-        (data: any) => {
-          console.log('Product updated:', data); // Add logging
-          const index = this.products.findIndex(p => p.id === productData.id);
-          if (index !== -1) {
-            this.products[index] = data;
-          }
-          this.selectedProduct = null; // Clear selected product after updating
-          this.refreshProductList(); // Refresh the product list
-        },
-        (error: HttpErrorResponse) => {
-          console.error('Error updating product:', error);
-        }
-      );
-    }
   }
 
   deleteProduct(id: number) {

@@ -1,12 +1,18 @@
 <div class="admin-dashboard">
-  <app-header></app-header>
   <div class="container">
     <header class="page-header">
-      <h1>Admin Dashboard</h1>
-      <p>Welcome to the admin panel. Manage your store here.</p>
+      <div class="header-content">
+        <div class="header-left">
+          <h1>Admin Dashboard</h1>
+          <p>Welcome to the admin panel. Manage your store here.</p>
+        </div>
+        <div class="header-right">
+          <button class="logout-btn" (click)="logout()">Logout</button>
+        </div>
+      </div>
     </header>
 
-    <div class="dashboard-stats">
+  <div class="dashboard-stats">
       <div class="stat-card">
         <h3>Total Products</h3>
         <div class="stat-value">{{ totalProducts }}</div>
@@ -15,20 +21,20 @@
 
       <div class="stat-card">
         <h3>Low Stock Products</h3>
-        <div class="stat-value">{{ lowStockProducts }}</div>
-        <a routerLink="/admin/products" class="stat-link">View Details</a>
+        <div (click)="getLowStockProducts()" class="stat-value">{{ lowStockProducts }}</div>
+        <a routerLink="/admin-product-dashboard" class="stat-link">View Details</a>
       </div>
 
       <div class="stat-card">
         <h3>Orders</h3>
-        <div class="stat-value">0</div>
-        <a href="#" class="stat-link">View Orders</a>
+        <div class="stat-value">{{totalOrders}}</div>
+        <a routerLink="/order-details" class="stat-link">View Orders</a>
       </div>
 
       <div class="stat-card">
         <h3>Revenue (Demo)</h3>
-        <div class="stat-value">0.00</div>
-        <a href="#" class="stat-link">Sales Report</a>
+        <div class="stat-value">₹{{totalRevenue}}</div>
+        <a routerLink="/order-details" class="stat-link">Sales Report</a>
       </div>
     </div>
 
