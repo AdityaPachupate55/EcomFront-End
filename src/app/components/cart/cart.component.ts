@@ -1,9 +1,12 @@
+import { red } from './../../../../node_modules/@colors/colors/index.d';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service'
 import { HeaderComponent } from "../../layout/header/header.component";
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +21,11 @@ export class CartComponent implements OnInit {
   tax = 0;
   orderTotal = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cartService.cart$.subscribe(cart => {
@@ -81,6 +88,18 @@ export class CartComponent implements OnInit {
 
   getCategoryName(categoryId: number): string {
     return this.categoryMap[categoryId] || 'Unknown';
+  }
+
+  proceedToCheckout(): void {
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      if (!isLoggedIn) {
+        alert('Please log in to proceed to checkout.');
+        this.router.navigate(['/user-login']);
+      } else {
+        // Navigate to checkout page if user is logged in
+        this.router.navigate(['/app-carttable-checktoproceed']);
+      }
+    });
   }
 }
 

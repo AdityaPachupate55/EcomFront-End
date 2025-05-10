@@ -1,11 +1,10 @@
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { HeaderComponent } from "../../layout/header/header.component";
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-admin',
-  imports: [RouterLink, HeaderComponent],
+  imports: [RouterLink],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
