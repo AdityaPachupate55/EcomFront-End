@@ -77,8 +77,20 @@ export class AuthService {
         // Decode the JWT token and store the user details
         this.userDetails = decodeJwtToken(token);
         console.log('Decoded User Details:', this.userDetails);
+        
+        // Store user ID using the 'id' claim from the token
+        if (this.userDetails && this.userDetails.id) {
+          localStorage.setItem('userId', this.userDetails.id);
+          console.log('User ID stored:', this.userDetails.id);
+        }
 
-        this.isLoggedInSubject.next(true); // Update login status
+        // Store user role
+        if (this.userDetails.role) {
+          localStorage.setItem('userRole', this.userDetails.role);
+          console.log('User Role:', this.userDetails.role);
+        }
+
+        this.isLoggedInSubject.next(true);
         alert('Login successful!');
         this.router.navigate(['/']);
       },

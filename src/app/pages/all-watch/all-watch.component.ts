@@ -11,6 +11,8 @@ import { catchError, throwError } from 'rxjs';
 import { ProductService, Product as IProduct } from '../../services/product.service';
 import { CartService } from '../../services/cart.service'
 import { HeaderComponent } from "../../layout/header/header.component";
+import { FooterComponent } from "../../layout/footer/footer.component";
+import { AuthService } from '../../services/auth.service';
 
 interface Product {
   id: number;
@@ -29,7 +31,7 @@ interface Product {
   selector: 'app-all-watch',
   standalone: true,
   imports: [CommonModule, HttpClientModule, CommonModule,
-    RouterModule, HeaderComponent], // Add HttpClientModule here
+    RouterModule, HeaderComponent, FooterComponent], // Add HttpClientModule here
   templateUrl: './all-watch.component.html',
   styleUrls: ['./all-watch.component.css'], // Fixed typo: styleUrl -> styleUrls
 })
@@ -51,6 +53,7 @@ export class AllWatchComponent implements OnInit {
     private router: Router,
     private IproductService: ProductService,
     private cartService: CartService,
+    private authService: AuthService,
     // private route: ActivatedRoute
 
   ) {}
@@ -104,20 +107,12 @@ export class AllWatchComponent implements OnInit {
     target.onerror = null; // Prevent infinite loop if the fallback image also fails
   }
 
-  // onAddToCart(productId: number) {
-  //   const token = localStorage.getItem('user_token');
-  //   if (!token) {
-  //     alert('Please login to add items to cart');
-  //     this.router.navigate(['/login']);
-  //     return;
-  //   }
 
-  //   console.log('Product added to cart, ID:', productId);
-  // }
 
   addToCart(product: Product): void {
-    this.cartService.addToCart(product, 1);
-    alert(`${product.id} added to cart!`);
+
+      this.cartService.addToCart(product, 1);
+      alert(`${product.id} added to cart!`);
   }
 
   sample(id:any):void{

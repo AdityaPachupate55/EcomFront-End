@@ -2,15 +2,12 @@ import {
   InjectionToken
 } from "./chunk-CPN5WQDT.js";
 
-<<<<<<< HEAD:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-B4AXUQYK.js
-=======
 <<<<<<<< HEAD:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-EJTC23CQ.js
 // ../node_modules/@angular/common/fesm2022/dom_tokens-rA0ACyx7.mjs
 var DOCUMENT = new InjectionToken(ngDevMode ? "DocumentToken" : "");
 
 // ../node_modules/@angular/common/fesm2022/xhr-BfNfxNDv.mjs
 ========
->>>>>>> e30496127096fdfc87f1a7a5fff7eddb6ae58c1f:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-DHSY247K.js
 // node_modules/@angular/common/fesm2022/xhr-BfNfxNDv.mjs
 >>>>>>>> d5f71e534c8b10eab0be2ed04fe2ecd0561141d4:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-B4AXUQYK.js
 function parseCookieValue(cookieStr, name) {
@@ -63,12 +60,8 @@ export {
    * License: MIT
    *)
 */
-<<<<<<< HEAD:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-B4AXUQYK.js
-//# sourceMappingURL=chunk-B4AXUQYK.js.map
-=======
 <<<<<<<< HEAD:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-EJTC23CQ.js
 //# sourceMappingURL=chunk-EJTC23CQ.js.map
 ========
 //# sourceMappingURL=chunk-B4AXUQYK.js.map
 >>>>>>>> d5f71e534c8b10eab0be2ed04fe2ecd0561141d4:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-B4AXUQYK.js
->>>>>>> e30496127096fdfc87f1a7a5fff7eddb6ae58c1f:.angular/cache/19.2.10/EcomFrontEnd/vite/deps/chunk-DHSY247K.js

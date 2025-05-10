@@ -1,0 +1,73 @@
+<div class="order-management">
+  <div class="container">
+    <header class="page-header">
+      <h1>Order Management</h1>
+      <a routerLink="/admin-dashboard" class="btn btn-primary">Go to Dashboard</a>
+    </header>
+
+    <div class="section">
+      <div class="orders-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User ID</th>
+              <th>Total Price</th>
+              <th>Shipping Address</th>
+              <th>Current Status</th>
+              <th>Update Status</th>
+              <th>Payment Status</th>
+              <th>Update Payment</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders">
+              <td>{{ order.orderID }}</td>
+              <td>{{ order.userID }}</td>
+              <td>₹{{ order.totalPrice.toFixed(2) }}</td>
+              <td>{{ order.shippingAddress }}</td>
+              <td>
+                <span [class]="'status-badge ' + order.orderStatus.toLowerCase()">
+                  {{ order.orderStatus }}
+                </span>
+              </td>
+              <td>
+                <select
+                  [(ngModel)]="order.orderStatus"
+                  (change)="updateOrderStatus(order.orderID, order.orderStatus)"
+                  class="status-select">
+                  <option value="dispatched">Dispatched</option>
+                  <option value="transit">In Transit</option>
+                  <option value="delivered">Delivered</option>
+                </select>
+              </td>
+              <td>
+                <span [class]="'status-badge ' + order.paymentStatus.toLowerCase()">
+                  {{ order.paymentStatus }}
+                </span>
+              </td>
+              <td>
+                <select
+                  [(ngModel)]="order.paymentStatus"
+                  (change)="updatePaymentStatus(order.orderID, order.paymentStatus)"
+                  class="status-select">
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-icon view" (click)="deleteOrder(order.orderID)">
+                    <i class="fas fa-eye">Remove</i>
+                  </button>
+
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

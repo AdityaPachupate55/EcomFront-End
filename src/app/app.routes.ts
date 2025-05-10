@@ -9,18 +9,17 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { CartComponent } from './components/cart/cart.component';
 import { AdminComponent } from './components/admin/admin.component';
-
+// import { CartdetailsComponent } from './components/cartdetails/cartdetails.component';
 import { ProductManagementComponent } from './components/admin/product-management/product-management.component';
-
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
-
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { RoleGuard } from './guards/role.guard';
+import { CarttableChecktoproceedComponent } from './components/carttable-checktoproceed/carttable-checktoproceed.component';
 import { UserManagementComponent } from './components/admin/user-management/user-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-
+ 
   { path: 'analogue', component: AnalogueComponent },
   { path: 'smart', component: SmartComponent },
   { path: 'digital', component: DigitalComponent },
@@ -29,15 +28,13 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
-  {
+  {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent},  {
     path:'admin-user-dashboard', component:UserManagementComponent
   },
 
   {
     path: 'cart',
     component: CartComponent,
-    canActivate: [RoleGuard],
-    data: { role: 'user' },
   },
 
   {
@@ -53,6 +50,6 @@ export const routes: Routes = [
     data: { role: 'admin' },
   },
   { path: 'user-profile', component: UserProfileComponent },
-
+  // {path:'cart-details',component:CartdetailsComponent},
   { path: '', redirectTo: '/app-home', pathMatch: 'full' },
 ];

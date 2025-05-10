@@ -1,33 +1,32 @@
+<app-header></app-header>
 <div class="container-profile">
     <div class="row-profile">
         <!-- Left Column -->
         <div class="col-left">
             <div class="profile-picture">
                 <img class="profile-image" src="https://img.freepik.com/premium-photo/stylish-man-flat-vector-profile-picture-ai-generated_606187-309.jpg" alt="Profile Picture">
-                <span class="profile-name">{{profile.name}}</span>
-                <span class="profile-email">{{profile.email}}</span>
-            </div>  
+            </div>
+            <!-- User Details Table -->
+            <table class="user-details-table">
+                <tr>
+                    <th>Name</th>
+                    <td>{{profile.name}}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{profile.email}}</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>{{profile.phone}}</td>
+                </tr>
+            </table>
         </div>
 
         <!-- Center Column -->
         <div class="col-center">
             <form class="profile-settings" (ngSubmit)="onUpdateProfile()">
-                <h4 class="settings-title">Profile Settings</h4>
-
-                <div class="form-group">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-input" placeholder="Name" [(ngModel)]="profile.name" name="firstName" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Mobile Number</label>
-                    <input type="text" class="form-input" placeholder="Enter phone number" [(ngModel)]="profile.phone" name="mobileNumber" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Email ID</label>
-                    <input type="email" class="form-input" placeholder="Enter email ID" [(ngModel)]="profile.email" name="email" required>
-                </div>
+                <h4 class="settings-title">Address Settings</h4>
 
                 <div class="form-group">
                     <label class="form-label">Select Address</label>
@@ -35,7 +34,7 @@
                         <option *ngFor="let address of addresses; let i = index" [value]="i">
                           {{ address.addressLine1 }}, {{ address.addressLine2 }}
                         </option>
-                      </select>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -47,12 +46,17 @@
                     <label class="form-label">Address Line 2</label>
                     <input type="text" class="form-input" placeholder="Enter address line 2" [(ngModel)]="profile.addressLine2" name="addressLine2">
                 </div>
-                
+
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" class="form-input" placeholder="Enter city" [(ngModel)]="profile.city" name="city">
+                </div>
+
                 <div class="form-group">
                     <label class="form-label">Postcode</label>
                     <input type="text" class="form-input" placeholder="Enter postcode" [(ngModel)]="profile.postalCode" name="postcode">
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">State</label>
                     <input type="text" class="form-input" placeholder="Enter state" [(ngModel)]="profile.state" name="state">
@@ -64,9 +68,54 @@
                 </div>
 
                 <div class="save-button-container">
-                    <button class="save-button" type="submit">Save Profile</button>
+                    <button class="save-button" type="submit">Update Address</button>
+                    <button class="save-button" type="button" (click)="showAddAddressForm()">Add New Address</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<!-- Add New Address Modal -->
+<div class="modal" [class.show]="isAddAddressModalVisible">
+    <div class="modal-content">
+        <h4>Add New Address</h4>
+        <form (ngSubmit)="onSubmitNewAddress()">
+            <div class="form-group">
+                <label class="form-label">Address Line 1</label>
+                <input type="text" class="form-input" placeholder="Enter address line 1" [(ngModel)]="newAddress.addressLine1" name="newAddressLine1" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Address Line 2</label>
+                <input type="text" class="form-input" placeholder="Enter address line 2" [(ngModel)]="newAddress.addressLine2" name="newAddressLine2">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">City</label>
+                <input type="text" class="form-input" placeholder="Enter city" [(ngModel)]="newAddress.city" name="newCity" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Postcode</label>
+                <input type="text" class="form-input" placeholder="Enter postcode" [(ngModel)]="newAddress.postalCode" name="newPostcode" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">State</label>
+                <input type="text" class="form-input" placeholder="Enter state" [(ngModel)]="newAddress.state" name="newState" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-input" placeholder="Enter country" [(ngModel)]="newAddress.country" name="newCountry" required>
+            </div>
+
+            <div class="save-button-container">
+                <button class="save-button" type="submit">Submit</button>
+                <button class="save-button" type="button" (click)="hideAddAddressForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<app-footer></app-footer>

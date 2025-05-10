@@ -31,9 +31,9 @@
 
           <div class="item-quantity">
             <div class="quantity-controls">
-              <button (click)="decreaseQuantity(item)" [disabled]="item.quantity <= 1">-</button>
+              <button (click)="decreaseQuantity(item)" >-</button>
               <input type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item)" min="1" [max]="item.stock">
-              <button (click)="increaseQuantity(item)" [disabled]="item.quantity >= item.stock">+</button>
+              <button (click)="increaseQuantity(item)" >+</button>
             </div>
           </div>
 
@@ -70,7 +70,7 @@
           <span>{{ orderTotal.toFixed(2) }}</span>
         </div>
 
-        <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+        <a routerLink="/app-carttable-checktoproceed"  class="btn btn-primary checkout-btn">Proceed to Checkout</a> 
 
         <div class="cart-actions">
           <a routerLink="/products" class="continue-shopping">Continue Shopping</a>
