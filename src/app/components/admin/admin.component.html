@@ -1,5 +1,5 @@
 <div class="admin-dashboard">
-  <app-header></app-header>
+  
   <div class="container">
     <header class="page-header">
       <h1>Admin Dashboard</h1>
@@ -15,19 +15,19 @@
 
       <div class="stat-card">
         <h3>Low Stock Products</h3>
-        <div class="stat-value">{{ lowStockProducts }}</div>
-        <a routerLink="/admin/products" class="stat-link">View Details</a>
+        <div (click)="getLowStockProducts()" class="stat-value">{{ lowStockProducts }}</div>
+        <a routerLink="/admin-product-dashboard" class="stat-link">View Details</a>
       </div>
 
       <div class="stat-card">
         <h3>Orders</h3>
-        <div class="stat-value">0</div>
-        <a href="#" class="stat-link">View Orders</a>
+        <div class="stat-value">{{totalOrders}}</div>
+        <a routerLink="/order-details" class="stat-link">View Orders</a>
       </div>
 
       <div class="stat-card">
         <h3>Revenue (Demo)</h3>
-        <div class="stat-value">0.00</div>
+        <div class="stat-value">₹{{totalRevenue}}</div>
         <a href="#" class="stat-link">Sales Report</a>
       </div>
     </div>
