@@ -12,6 +12,7 @@ import { HeaderComponent } from "../../layout/header/header.component";
 import { ProductService, Product as IProduct } from '../../services/product.service';
 import { CartService } from '../../services/cart.service'
 import { FooterComponent } from "../../layout/footer/footer.component";
+import { RouterLink } from '@angular/router';
 
 interface Product {
   id: number;
@@ -30,7 +31,7 @@ interface Product {
 
 @Component({
   selector: 'app-smart',
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent,RouterLink],
   templateUrl: './smart.component.html',
   styleUrl: './smart.component.css'
 })
