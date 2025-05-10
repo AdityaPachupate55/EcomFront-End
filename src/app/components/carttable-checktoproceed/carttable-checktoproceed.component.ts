@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService, CartItem } from '../../services/cart.service';
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 interface CartPostItem {
   cartItemID: number;
@@ -60,7 +61,7 @@ export class CarttableChecktoproceedComponent implements OnInit {
       productId: parseInt(item.id.toString()),
       userId: parseInt(userId),
       quantity: parseInt(item.quantity.toString()),
-      isActive: true,
+      isActive: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       totalPrice: Math.round(item.price * item.quantity) // Convert to integer
@@ -117,27 +118,45 @@ export class CarttableChecktoproceedComponent implements OnInit {
       const selectedAddress = JSON.parse(selectedAddressStr);
       const formattedAddress = `${selectedAddress.addressLine1}, ${selectedAddress.addressLine2}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.country} - ${selectedAddress.postalCode}`;
   
-      const orderData = {
-        orderID: 0,  // Will be auto-incremented by database
-        userID: parseInt(userId),
-        totalPrice: this.getTotal(),
-        shippingAddress: formattedAddress,
-        orderStatus: "NA",
-        paymentStatus: "NA"
-      };
+      // First update all cart items to inactive
+      const updatePromises = this.cartItems.map(item => {
+        const updateData = {
+          cartItemID: item.id,
+          productId: item.id,
+          userId: parseInt(userId),
+          quantity: item.quantity,
+          isActive: false, // This will be stored as 0 in SQL bit field
+          updatedAt: new Date().toISOString(),
+          totalPrice: Math.round(item.price * item.quantity)
+        };
+        
+        return this.http.put(`https://localhost:7194/api/Cart/${item.id}`, updateData).toPromise();
+      });
   
-      this.http.post('https://localhost:7194/api/Orders', orderData).subscribe({
-        next: (response) => {
+      // After all cart items are updated, create the order
+      Promise.all(updatePromises)
+        .then(() => {
+          const orderData = {
+            orderID: 0,
+            userID: parseInt(userId),
+            totalPrice: this.getTotal(),
+            shippingAddress: formattedAddress,
+            orderStatus: "Pending",
+            paymentStatus: "Unpaid"
+          };
+  
+          return this.http.post('https://localhost:7194/api/Orders', orderData).toPromise();
+        })
+        .then((response) => {
           console.log('Order created successfully:', response);
           alert('Order placed successfully!');
           this.cartService.clearCart();
           this.router.navigate(['/order-confirmation']);
-        },
-        error: (error) => {
-          console.error('Error creating order:', error);
-          alert('Failed to place order. Please try again.');
-        }
-      });
+        })
+        .catch((error) => {
+          console.error('Error processing order:', error);
+          alert('Failed to process order. Please try again.');
+        });
   
     } catch (error) {
       console.error('Error processing order:', error);
