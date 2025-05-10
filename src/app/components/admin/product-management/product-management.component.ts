@@ -17,14 +17,13 @@ export class ProductManagementComponent implements OnInit {
   searchTerm: string = '';
   selectedBrand: string = '';
   selectedFile: File | null = null;
-  
-categoryMap: { [key: number]: string } = {
-      1: 'Digital',
-      2: 'Analogue',
-      3: 'Smart',
-    };
-    categoryKeys: number[] = Object.keys(this.categoryMap).map(Number);
-  
+
+  categoryMap: { [key: number]: string } = {
+    1: 'Digital',
+    2: 'Analogue',
+    3: 'Smart',
+  };
+  categoryKeys: number[] = Object.keys(this.categoryMap).map(Number);
 
   addProductForm: FormGroup;
   editProductForm: FormGroup;
@@ -38,10 +37,9 @@ categoryMap: { [key: number]: string } = {
       price: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(0)]],
-      categoryId: ['', Validators.required],
-      subCategoryId: ['', Validators.required]
+      categoryId: ['', Validators.required]
     });
-    
+
     this.editProductForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
@@ -49,10 +47,8 @@ categoryMap: { [key: number]: string } = {
       price: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(0)]],
-      categoryId: ['', Validators.required],
-      subCategoryId: ['', Validators.required]
+      categoryId: ['', Validators.required]
     });
-    
   }
 
   ngOnInit() {
@@ -91,7 +87,7 @@ categoryMap: { [key: number]: string } = {
   addProduct() {
     if (this.addProductForm.valid) {
       const productData = this.addProductForm.value;
-  
+
       this.http.post('https://localhost:7194/api/Product', productData).subscribe(
         (data: any) => {
           console.log('Product added successfully:', data);
@@ -99,7 +95,7 @@ categoryMap: { [key: number]: string } = {
           this.showAddProductForm = false;
           this.addProductForm.reset();
           this.refreshProductList(); // Refresh the product list
-  
+
           // Upload the image if selected
           if (this.selectedFile) {
             this.uploadProductImage(data.id);
@@ -114,12 +110,11 @@ categoryMap: { [key: number]: string } = {
       );
     }
   }
-  
 
   updateProduct() {
     if (this.editProductForm.valid) {
       const productData = this.editProductForm.value;
-  
+
       this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe(
         (data: any) => {
           console.log('Product updated successfully:', data); // Add logging
@@ -129,7 +124,7 @@ categoryMap: { [key: number]: string } = {
           }
           this.selectedProduct = null; // Clear selected product after updating
           this.refreshProductList(); // Refresh the product list
-  
+
           // Upload the image if selected
           if (this.selectedFile) {
             this.uploadProductImage(productData.id);
@@ -141,7 +136,6 @@ categoryMap: { [key: number]: string } = {
       );
     }
   }
-  
 
   uploadProductImage(productId: number) {
     const formData = new FormData();
@@ -159,14 +153,12 @@ categoryMap: { [key: number]: string } = {
     );
   }
 
-
   refreshProductList() {
     this.http.get('https://localhost:7194/api/Product').subscribe(
       (data: any) => {
         this.products = data;
         this.filteredProducts = this.products;
         this.filterProducts(); // Ensure filteredProducts is updated
-        
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching products:', error);
@@ -183,7 +175,6 @@ categoryMap: { [key: number]: string } = {
   cancelEdit() {
     this.selectedProduct = null; // Clear the selected product to cancel editing
   }
-
 
   deleteProduct(id: number) {
     this.http.delete(`https://localhost:7194/api/Product/${id}`).subscribe(

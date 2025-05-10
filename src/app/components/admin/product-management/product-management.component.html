@@ -2,7 +2,6 @@
   <div class="container">
     <header class="page-header">
       <h1>Product Management</h1>
-      <!-- <p>Manage your product inventory here.</p> -->
       <a routerLink="/admin-dashboard" class="btn btn-primary">Go to Dashboard</a>
     </header>
 
@@ -56,11 +55,10 @@
         </div>
         <div class="form-group">
           <label for="category">Category:</label>
-          <select id="category" formControlName="categoryId" class="custom-select"  required>
+          <select id="category" formControlName="categoryId" required class="custom-select">
             <option *ngFor="let key of categoryKeys" [value]="key">{{ categoryMap[key] }}</option>
           </select>
         </div>
-       
         <div class="form-group">
           <label for="image">Image:</label>
           <input type="file" id="image" (change)="onFileSelected($event)">
@@ -69,8 +67,6 @@
         <button type="button" class="btn btn-secondary" (click)="showAddProductForm = false">Cancel</button>
       </form>
     </div>
-    
-    
 
     <!-- Edit Product Form -->
     <div *ngIf="selectedProduct" class="edit-product-form">
@@ -113,11 +109,10 @@
         </div>
         <div class="form-group">
           <label for="edit-category">Category:</label>
-          <select id="edit-category" formControlName="categoryId" class="custom-select" required>
+          <select id="edit-category" formControlName="categoryId" required class="custom-select">
             <option *ngFor="let key of categoryKeys" [value]="key">{{ categoryMap[key] }}</option>
           </select>
         </div>
-        
         <div class="form-group">
           <label for="edit-image">Image:</label>
           <input type="file" id="edit-image" (change)="onFileSelected($event)">
@@ -126,8 +121,6 @@
         <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
       </form>
     </div>
-    
-    
 
     <div class="products-table">
       <table>
@@ -139,9 +132,7 @@
             <th>Price</th>
             <th>Description</th>
             <th>Quantity</th>
-            <th>Category</th> 
-            
-
+            <th>Category</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -158,8 +149,6 @@
             <td>{{ product.description }}</td>
             <td>{{ product.quantity }}</td>
             <td>{{ categoryMap[product.categoryId] }}</td> <!-- Display category -->
-            
-
             <td>
               <div class="action-buttons">
                 <button class="btn-icon edit" (click)="editProduct(product)">Edit</button>
