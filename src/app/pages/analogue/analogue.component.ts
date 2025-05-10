@@ -6,7 +6,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { HeaderComponent } from '../../layout/header/header.component';
 import {
@@ -31,7 +31,7 @@ interface Product {
 
 @Component({
   selector: 'app-analogue',
-  imports: [CommonModule, HeaderComponent,FooterComponent],
+  imports: [CommonModule, HeaderComponent,FooterComponent,RouterModule],
   templateUrl: './analogue.component.html',
   styleUrl: './analogue.component.css',
 })

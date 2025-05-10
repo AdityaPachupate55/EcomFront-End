@@ -68,33 +68,39 @@
   margin-top: auto;
 }
 
-.btn.btn-primary {
-  width: 20%;
+/* Normalize styles for buttons and links */
+.btn {
+  display: inline-block; /* Ensure both <a> and <button> behave the same */
+  width: 100%; /* Make both buttons occupy the same width */
   padding: 0.75rem;
   border: none;
   border-radius: 6px;
   font-weight: 600;
   text-align: center;
-  text-decoration: none;
+  text-decoration: none; /* Remove underline for <a> tags */
   cursor: pointer;
   transition: all 0.3s ease;
-  margin: 20px auto;  /* Change margin to auto for horizontal centering */
-  display: block;     /* Add this line to ensure proper centering */
+  box-sizing: border-box; /* Ensure consistent box model */
 }
 
-.btn.btn-primary:first-child {
+.btn-primary {
   background-color: #2c3e50;
   color: white;
 }
 
-.btn.btn-primary:last-child {
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
   background-color: #e74c3c;
   color: white;
 }
 
-.btn.btn-primary:hover {
+.btn-secondary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .products-grid {

@@ -251,3 +251,27 @@
 .form-actions button:last-child:hover {
   background-color: #c82333;
 }
+
+/* Address Dropdown */
+.address-dropdown {
+  margin-top: 1rem;
+}
+
+.address-dropdown label {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.address-dropdown select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.address-dropdown select option {
+  cursor: pointer; /* Pointer cursor for the options */
+  padding: 0.5rem;
+  font-size: 1rem;
+}

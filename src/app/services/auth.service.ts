@@ -126,8 +126,19 @@ export class AuthService {
   }
 
   logout() {
+
+    const userId = localStorage.getItem('userId');
+
     localStorage.removeItem('user_token');
     localStorage.removeItem('admin_token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+  
+    // Remove any address stored for the user
+    if (userId) {
+      localStorage.removeItem(`address_${userId}`);
+    }
+
     this.userDetails = null;
     this.adminDetails = null;
     this.isLoggedInSubject.next(false);

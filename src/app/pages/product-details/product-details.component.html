@@ -22,6 +22,19 @@
       </div>
     </div>
 
+
+    <!-- Address Dropdown -->
+    <div class="address-dropdown">
+        <label for="addressSelect">Select Address:</label>
+        <select id="addressSelect" [(ngModel)]="selectedAddress" (change)="updateLocalStorageWithAddress()">
+        <option *ngIf="addresses.length === 0" disabled>No records, Add New Address</option>
+        <option *ngFor="let address of addresses" [ngValue]="address">
+            {{ address.addressLine1 }}, {{ address.city }}, {{ address.state }}
+        </option>
+        </select>
+    </div>
+
+
     <!-- Action Buttons -->
     <div class="action-buttons">
       <button (click)="addToCart()">Add to Cart</button>

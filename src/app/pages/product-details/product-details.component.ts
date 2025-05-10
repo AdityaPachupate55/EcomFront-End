@@ -41,6 +41,9 @@ export class ProductDetailsComponent implements OnInit {
     country: ''
   };
 
+  addresses: any[] = []; // Stores the list of addresses
+  selectedAddress: any = null; // Stores the selected address
+
   private addressApiUrl = 'https://localhost:7194/api/Address'; // Replace with your API endpoint
 
   constructor(
@@ -60,6 +63,8 @@ export class ProductDetailsComponent implements OnInit {
         this.router.navigate(['/all-watch']); // Redirect if no ID is found
       }
     });
+
+    this.fetchAddresses(); // Fetch addresses on component initialization
   }
 
   getProductDetails(productId: number): void {
@@ -67,6 +72,28 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getProductById(productId).subscribe((data: Product) => {
       this.product = data;
       console.log('Product Details:', this.product); // Debugging
+    });
+  }
+
+  fetchAddresses(): void {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert('Please login first.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.http.get<any[]>(`${this.addressApiUrl}/user/${userId}`).subscribe({
+      next: (response) => {
+        this.addresses = response;
+        if (this.addresses.length > 0) {
+          this.selectedAddress = this.addresses[0]; // Default to the first address
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching addresses:', err);
+        this.addresses = []; // Ensure the dropdown shows "No records"
+      }
     });
   }
 
@@ -115,8 +142,7 @@ export class ProductDetailsComponent implements OnInit {
     this.http.post(this.addressApiUrl, addressData).subscribe({
       next: () => {
         alert('Address saved successfully!');
-        // Save the address in local storage
-        localStorage.setItem(`address_${userId}`, JSON.stringify(addressData));
+        this.fetchAddresses(); // Refresh the address list
         this.closeAddressForm();
       },
       error: (err) => {
@@ -124,5 +150,24 @@ export class ProductDetailsComponent implements OnInit {
         alert('Failed to save the address. Please try again.');
       }
     });
+  }
+
+  updateLocalStorageWithAddress(): void {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert('Please login first.');
+      this.router.navigate(['/login']);
+      return;
+    }
+  
+    if (this.selectedAddress) {
+      // Serialize the selected address object into a JSON string
+      const serializedAddress = JSON.stringify(this.selectedAddress);
+  
+      // Save the serialized address in local storage
+      localStorage.setItem(`address_${userId}`, serializedAddress);
+  
+      alert('Selected address updated in local storage!');
+    }
   }
 }
