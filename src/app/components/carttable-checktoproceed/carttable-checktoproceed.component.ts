@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService, CartItem } from '../../services/cart.service';
+import { HttpClient } from '@angular/common/http';
 
 interface CartPostItem {
   cartItemID: number;
@@ -14,12 +15,13 @@ interface CartPostItem {
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { HeaderComponent } from "../../layout/header/header.component";
 
 @Component({
   selector: 'app-carttable-checktoproceed',
   templateUrl: './carttable-checktoproceed.component.html',
   styleUrls: ['./carttable-checktoproceed.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, HeaderComponent]
 })
 export class CarttableChecktoproceedComponent implements OnInit {
   cartItems: CartItem[] = [];
@@ -28,7 +30,8 @@ export class CarttableChecktoproceedComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -102,8 +105,44 @@ export class CarttableChecktoproceedComponent implements OnInit {
     return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   } 
   confirmOrder(): void {
-    // Logic to confirm the order
-    console.log('Order confirmed!');
+    const userId = localStorage.getItem('userId');
+    const selectedAddressStr = localStorage.getItem('selectedAddress');
+    
+    if (!userId || !selectedAddressStr) {
+      alert('Please login and select a delivery address');
+      return;
+    }
+  
+    try {
+      const selectedAddress = JSON.parse(selectedAddressStr);
+      const formattedAddress = `${selectedAddress.addressLine1}, ${selectedAddress.addressLine2}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.country} - ${selectedAddress.postalCode}`;
+  
+      const orderData = {
+        orderID: 0,  // Will be auto-incremented by database
+        userID: parseInt(userId),
+        totalPrice: this.getTotal(),
+        shippingAddress: formattedAddress,
+        orderStatus: "NA",
+        paymentStatus: "NA"
+      };
+  
+      this.http.post('https://localhost:7194/api/Orders', orderData).subscribe({
+        next: (response) => {
+          console.log('Order created successfully:', response);
+          alert('Order placed successfully!');
+          this.cartService.clearCart();
+          this.router.navigate(['/order-confirmation']);
+        },
+        error: (error) => {
+          console.error('Error creating order:', error);
+          alert('Failed to place order. Please try again.');
+        }
+      });
+  
+    } catch (error) {
+      console.error('Error processing order:', error);
+      alert('Error processing order. Please try again.');
+    }
   }
 
 }
