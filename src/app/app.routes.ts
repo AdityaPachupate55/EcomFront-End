@@ -16,6 +16,8 @@ import { ProductDetailsComponent } from './pages/product-details/product-details
 import { RoleGuard } from './guards/role.guard';
 import { CarttableChecktoproceedComponent } from './components/carttable-checktoproceed/carttable-checktoproceed.component';
 import { UserManagementComponent } from './components/admin/user-management/user-management.component';
+import { CartdetailsComponent } from './components/admin/cartdetails/cartdetails.component';
+import { OrderDetailsComponent } from './components/admin/order-details/order-details.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,8 +30,15 @@ export const routes: Routes = [
   { path: 'user-login', component: UserLoginComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
-  {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent},  {
+  {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent},  
+  {
     path:'admin-user-dashboard', component:UserManagementComponent
+  },
+  {
+    path:'cart-details',component:CartdetailsComponent
+  },
+  {
+    path:'order-details',component:OrderDetailsComponent
   },
 
   {
@@ -50,6 +59,6 @@ export const routes: Routes = [
     data: { role: 'admin' },
   },
   { path: 'user-profile', component: UserProfileComponent },
-  // {path:'cart-details',component:CartdetailsComponent},
+  {path:'cart-details',component:CartdetailsComponent},
   { path: '', redirectTo: '/app-home', pathMatch: 'full' },
 ];
