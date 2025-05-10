@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService, CartItem } from '../../services/cart.service';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 interface CartPostItem {
   cartItemID: number;
@@ -14,12 +16,13 @@ interface CartPostItem {
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { HeaderComponent } from "../../layout/header/header.component";
 
 @Component({
   selector: 'app-carttable-checktoproceed',
   templateUrl: './carttable-checktoproceed.component.html',
   styleUrls: ['./carttable-checktoproceed.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule, HeaderComponent]
 })
 export class CarttableChecktoproceedComponent implements OnInit {
   cartItems: CartItem[] = [];
@@ -28,7 +31,8 @@ export class CarttableChecktoproceedComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +61,7 @@ export class CarttableChecktoproceedComponent implements OnInit {
       productId: parseInt(item.id.toString()),
       userId: parseInt(userId),
       quantity: parseInt(item.quantity.toString()),
-      isActive: true,
+      isActive: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       totalPrice: Math.round(item.price * item.quantity) // Convert to integer
@@ -102,8 +106,62 @@ export class CarttableChecktoproceedComponent implements OnInit {
     return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   } 
   confirmOrder(): void {
-    // Logic to confirm the order
-    console.log('Order confirmed!');
+    const userId = localStorage.getItem('userId');
+    const selectedAddressStr = localStorage.getItem('selectedAddress');
+    
+    if (!userId || !selectedAddressStr) {
+      alert('Please login and select a delivery address');
+      return;
+    }
+  
+    try {
+      const selectedAddress = JSON.parse(selectedAddressStr);
+      const formattedAddress = `${selectedAddress.addressLine1}, ${selectedAddress.addressLine2}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.country} - ${selectedAddress.postalCode}`;
+  
+      // First update all cart items to inactive
+      const updatePromises = this.cartItems.map(item => {
+        const updateData = {
+          cartItemID: item.id,
+          productId: item.id,
+          userId: parseInt(userId),
+          quantity: item.quantity,
+          isActive: false, // This will be stored as 0 in SQL bit field
+          updatedAt: new Date().toISOString(),
+          totalPrice: Math.round(item.price * item.quantity)
+        };
+        
+        return this.http.put(`https://localhost:7194/api/Cart/${item.id}`, updateData).toPromise();
+      });
+  
+      // After all cart items are updated, create the order
+      Promise.all(updatePromises)
+        .then(() => {
+          const orderData = {
+            orderID: 0,
+            userID: parseInt(userId),
+            totalPrice: this.getTotal(),
+            shippingAddress: formattedAddress,
+            orderStatus: "Pending",
+            paymentStatus: "Unpaid"
+          };
+  
+          return this.http.post('https://localhost:7194/api/Orders', orderData).toPromise();
+        })
+        .then((response) => {
+          console.log('Order created successfully:', response);
+          alert('Order placed successfully!');
+          this.cartService.clearCart();
+          this.router.navigate(['/order-confirmation']);
+        })
+        .catch((error) => {
+          console.error('Error processing order:', error);
+          alert('Failed to process order. Please try again.');
+        });
+  
+    } catch (error) {
+      console.error('Error processing order:', error);
+      alert('Error processing order. Please try again.');
+    }
   }
 
 }

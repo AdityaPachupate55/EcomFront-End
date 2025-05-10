@@ -159,14 +159,14 @@ export class ProductDetailsComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-  
+
     if (this.selectedAddress) {
       // Serialize the selected address object into a JSON string
       const serializedAddress = JSON.stringify(this.selectedAddress);
-  
+
       // Save the serialized address in local storage
-      localStorage.setItem(`address_${userId}`, serializedAddress);
-  
+      localStorage.setItem(`selectedAddress`, serializedAddress);
+
       alert('Selected address updated in local storage!');
     }
   }
