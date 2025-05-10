@@ -2,7 +2,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "../../layout/header/header.component";
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-admin',
   imports: [RouterLink, HeaderComponent],
@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit {
   totalOrders: number = 0;
   totalRevenue: number = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private authService :AuthService ) {}
 
   ngOnInit(): void {
     this.getProducts();
@@ -64,5 +64,8 @@ export class AdminComponent implements OnInit {
     this.totalRevenue = this.orders.reduce((sum, order) => sum + order.totalPrice, 0);
   }
 
-  
+  logout():void{
+    this.authService.logout();
+    window.location.reload();
+  }
 }

@@ -1,12 +1,18 @@
 <div class="admin-dashboard">
-  
   <div class="container">
     <header class="page-header">
-      <h1>Admin Dashboard</h1>
-      <p>Welcome to the admin panel. Manage your store here.</p>
+      <div class="header-content">
+        <div class="header-left">
+          <h1>Admin Dashboard</h1>
+          <p>Welcome to the admin panel. Manage your store here.</p>
+        </div>
+        <div class="header-right">
+          <button class="logout-btn" (click)="logout()">Logout</button>
+        </div>
+      </div>
     </header>
 
-    <div class="dashboard-stats">
+  <div class="dashboard-stats">
       <div class="stat-card">
         <h3>Total Products</h3>
         <div class="stat-value">{{ totalProducts }}</div>
@@ -28,7 +34,7 @@
       <div class="stat-card">
         <h3>Revenue (Demo)</h3>
         <div class="stat-value">₹{{totalRevenue}}</div>
-        <a href="#" class="stat-link">Sales Report</a>
+        <a routerLink="/order-details" class="stat-link">Sales Report</a>
       </div>
     </div>
 
