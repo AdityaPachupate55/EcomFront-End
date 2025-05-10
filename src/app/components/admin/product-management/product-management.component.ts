@@ -59,7 +59,7 @@ export class ProductManagementComponent implements OnInit {
       }
     );
   }
- 
+
   filterProducts() {
     this.filteredProducts = this.products.filter(product => {
       const matchesName = product.name.toLowerCase().includes(this.searchTerm.toLowerCase());
