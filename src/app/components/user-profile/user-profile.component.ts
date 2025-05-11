@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { FooterComponent } from "../../layout/footer/footer.component";
 import { HeaderComponent } from "../../layout/header/header.component";
+import { NotifyService } from '../../services/notify.service';
 
 // Define User and Address interfaces
 interface User {
@@ -65,7 +66,11 @@ export class UserProfileComponent implements OnInit {
     country: ''
   };
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private notifyService: NotifyService
+  ) {}
 
   ngOnInit(): void {
     this.userId = this.authService.userDetails.id; // Initialize userId after authService is available
@@ -154,11 +159,11 @@ export class UserProfileComponent implements OnInit {
     this.http.put(`${this.addressUpdateApiUrl}/${updatedAddress.addressId}`, updatedAddress).subscribe({
       next: (response) => {
         console.log('Address updated successfully:', response);
-        alert('Address updated successfully!');
+        this.notifyService.addressUpdated();
       },
       error: (error) => {
         console.error('Error updating address:', error);
-        alert('Failed to update address. Please try again.');
+        this.notifyService.addressUpdateFailed();
       }
     });
   }
@@ -178,13 +183,13 @@ export class UserProfileComponent implements OnInit {
     this.http.post(this.addressRegisterApiUrl, this.newAddress).subscribe({
       next: (response) => {
         console.log('New address added successfully:', response);
-        alert('New address added successfully!');
+        this.notifyService.newAddressAdded();
         this.hideAddAddressForm();
         this.fetchUserProfile(); // Refresh the address list
       },
       error: (error) => {
         console.error('Error adding new address:', error);
-        alert('Failed to add new address. Please try again.');
+        this.notifyService.addressAddFailed();
       }
     });
   }

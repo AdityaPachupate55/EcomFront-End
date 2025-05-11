@@ -66,6 +66,49 @@ export class NotifyService {
     });
   }
 
+  accessDenied() {
+    Swal.fire({
+      icon: 'error',
+      title: '<span style="font-size: 24px; font-weight: 600; color: #484848;">Access Denied</span>',
+      html: `
+        <div style="margin: 20px 0;">
+          <p style="color: #666; font-size: 16px; margin-bottom: 20px;">You don't have the required permissions to access this page.</p>
+          <button class="home-btn" style="
+            background: linear-gradient(135deg, #d33, #c62828);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(211, 51, 51, 0.2);
+          ">
+            Return to Home
+          </button>
+        </div>
+      `,
+      showConfirmButton: false,
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      didRender: () => {
+        document.querySelector('.home-btn')?.addEventListener('click', () => {
+          Swal.close();
+          this.router.navigate(['/']);
+        });
+      }
+    });
+  }
+
   successLogin(){
     Swal.fire({
       toast: true,
@@ -563,6 +606,121 @@ export class NotifyService {
       background: '#fff',
       customClass: {
         popup: 'modern-popup rounded-popup'
+      }
+    });
+  }
+
+  addressUpdated() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Address updated successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  addressUpdateFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to update address',
+      text: 'Please try again',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  newAddressAdded() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'New address added successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  addressAddFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to add new address',
+      text: 'Please check your input and try again',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  productDetailsFetchFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to fetch product details',
+      text: 'Please try again later',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  addressSaved() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Address saved successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  addressSelected() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Delivery address updated',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
       }
     });
   }

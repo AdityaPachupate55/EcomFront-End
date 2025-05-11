@@ -72,15 +72,15 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   getProductDetails(productId: number): void {
-    console.log('Fetching product details for ID:', productId); // Debugging
+    console.log('Fetching product details for ID:', productId);
     this.productService.getProductById(productId).subscribe({
       next: (data: Product) => {
         this.product = data;
-        console.log('Product Details:', this.product); // Debugging
+        console.log('Product Details:', this.product);
       },
       error: (err) => {
         console.error('Error fetching product details:', err);
-        alert('Failed to fetch product details. Please try again.');
+        this.notifyService.productDetailsFetchFailed();
       }
     });
   }
@@ -136,7 +136,7 @@ export class ProductDetailsComponent implements OnInit {
   submitAddress(): void {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      this.notifyService.userNotLoggedIn(); // Notify user to login
+      this.notifyService.userNotLoggedIn();
       this.router.navigate(['/login']);
       return;
     }
@@ -146,16 +146,15 @@ export class ProductDetailsComponent implements OnInit {
       userId: parseInt(userId, 10)
     };
 
-    // Save the address to the database
     this.http.post(this.addressApiUrl, addressData).subscribe({
       next: () => {
-        alert('Address saved successfully!');
-        this.fetchAddresses(); // Refresh the address list
+        this.notifyService.addressSaved();
+        this.fetchAddresses();
         this.closeAddressForm();
       },
       error: (err) => {
         console.error('Error saving address:', err);
-        alert('Failed to save the address. Please try again.');
+        this.notifyService.addressAddFailed();
       }
     });
   }
@@ -163,19 +162,17 @@ export class ProductDetailsComponent implements OnInit {
   updateLocalStorageWithAddress(): void {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('Please login first.');
+      this.notifyService.userNotLoggedIn();
       this.router.navigate(['/login']);
       return;
     }
 
     if (this.selectedAddress) {
-      // Serialize the selected address object into a JSON string
       const serializedAddress = JSON.stringify(this.selectedAddress);
-
-      // Save the serialized address in local storage
       localStorage.setItem(`selectedAddress`, serializedAddress);
-
-      alert('Selected address updated in local storage!');
+      this.notifyService.addressSelected();
+    } else {
+      this.notifyService.addressRequired();
     }
   }
 }
