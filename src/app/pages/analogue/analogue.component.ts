@@ -122,7 +122,6 @@ export class AnalogueComponent {
 
   addToCart(product: Product): void {
     this.cartService.addToCart(product, 1);
-    alert(`${product.name} added to cart!`);
   }
 
   sortProducts(event: Event): void {

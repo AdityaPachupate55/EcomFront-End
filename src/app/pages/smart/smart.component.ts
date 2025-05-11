@@ -112,7 +112,6 @@ export class SmartComponent {
 
   addToCart(product: Product): void {
     this.cartService.addToCart(product, 1);
-    alert(`${product.name} added to cart!`);
   }
 
   getCategoryName(categoryId: number): string {

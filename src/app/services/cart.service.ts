@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Router } from '@angular/router';
 import { Product } from './product.service';
 import { catchError } from 'rxjs/operators';
+import { NotifyService } from './notify.service';
 
 export interface CartItem extends Product {
   quantity: number;
@@ -32,7 +33,8 @@ export class CartService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private notifyService: NotifyService
   ) {
     this.loadCartFromStorage();
   }
@@ -106,7 +108,7 @@ export class CartService {
     }
 
     this.saveCartToStorage(updatedCart);
-
+    this.notifyService.addedToCart();
     // Sync with backend only if the user is logged in
     const token = localStorage.getItem('user_token');
     if (token) {
