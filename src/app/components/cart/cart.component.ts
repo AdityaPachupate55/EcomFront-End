@@ -69,13 +69,15 @@ export class CartComponent implements OnInit {
   }
 
   removeItem(item: CartItem): void {
-    if (confirm(`Remove ${item.name} from cart?`)) {
+    const userConfirmed = window.confirm(`Remove ${item.name} from cart?`);
+    if (userConfirmed) {
       this.cartService.removeFromCart(item.id);
     }
   }
 
   clearCart(): void {
-    if (confirm('Are you sure you want to clear your cart?')) {
+    const userConfirmed = window.confirm('Are you sure you want to clear your cart?');
+    if (userConfirmed) {
       this.cartService.clearCart();
     }
   }
@@ -93,10 +95,8 @@ export class CartComponent implements OnInit {
   proceedToCheckout(): void {
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
       if (!isLoggedIn) {
-        alert('Please log in to proceed to checkout.');
         this.router.navigate(['/user-login']);
       } else {
-        // Navigate to checkout page if user is logged in
         this.router.navigate(['/app-carttable-checktoproceed']);
       }
     });

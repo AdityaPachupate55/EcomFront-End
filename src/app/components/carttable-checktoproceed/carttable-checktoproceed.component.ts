@@ -28,6 +28,8 @@ export class CarttableChecktoproceedComponent implements OnInit {
   cartItems: CartItem[] = [];
   totalItems: number = 0;
   orderConfirmed: boolean = false;
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private cartService: CartService,
@@ -45,13 +47,13 @@ export class CarttableChecktoproceedComponent implements OnInit {
 
   proceedToCheckout(): void {
     if (this.cartItems.length === 0) {
-      alert('Your cart is empty!');
+      this.errorMessage = 'Your cart is empty!';
       return;
     }
   
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('Please login first');
+      this.errorMessage = 'Please login first';
       this.router.navigate(['/login']);
       return;
     }
@@ -69,7 +71,6 @@ export class CarttableChecktoproceedComponent implements OnInit {
   
     console.log('Cart items to process:', formattedCartItems);
   
-    // Process items one by one
     let successCount = 0;
     let errorCount = 0;
   
@@ -81,11 +82,10 @@ export class CarttableChecktoproceedComponent implements OnInit {
           if (successCount + errorCount === formattedCartItems.length) {
             if (successCount === formattedCartItems.length) {
               this.orderConfirmed = true;
-              // this.cartService.clearCart();
-              alert('All items added to cart successfully!');
+              this.successMessage = 'All items added to cart successfully!';
               this.router.navigate(['/order-confirmation']);
             } else {
-              alert(`${successCount} items added, ${errorCount} failed`);
+              this.errorMessage = `${successCount} items added, ${errorCount} failed`;
             }
           }
         },
@@ -93,7 +93,7 @@ export class CarttableChecktoproceedComponent implements OnInit {
           console.error(`Error adding item ${index + 1}:`, err);
           errorCount++;
           if (successCount + errorCount === formattedCartItems.length) {
-            alert(`${successCount} items added, ${errorCount} failed`);
+            this.errorMessage = `${successCount} items added, ${errorCount} failed`;
           }
         }
       });
@@ -110,7 +110,7 @@ export class CarttableChecktoproceedComponent implements OnInit {
     const selectedAddressStr = localStorage.getItem('selectedAddress');
     
     if (!userId || !selectedAddressStr) {
-      alert('Please login and select a delivery address');
+      this.errorMessage = 'Please login and select a delivery address';
       return;
     }
   
@@ -149,18 +149,18 @@ export class CarttableChecktoproceedComponent implements OnInit {
         })
         .then((response) => {
           console.log('Order created successfully:', response);
-          alert('Order placed successfully!');
+          this.successMessage = 'Order placed successfully!';
           this.cartService.clearCart();
           this.router.navigate(['/order-confirmation']);
         })
         .catch((error) => {
           console.error('Error processing order:', error);
-          alert('Failed to process order. Please try again.');
+          this.errorMessage = 'Failed to process order. Please try again.';
         });
   
     } catch (error) {
       console.error('Error processing order:', error);
-      alert('Error processing order. Please try again.');
+      this.errorMessage = 'Error processing order. Please try again.';
     }
   }
 
