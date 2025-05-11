@@ -1,0 +1,30 @@
+.confirmation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.success-message {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.fa-check-circle {
+    color: #28a745;
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.continue-shopping {
+    margin-top: 2rem;
+    padding: 0.8rem 1.5rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

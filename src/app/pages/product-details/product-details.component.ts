@@ -176,4 +176,10 @@ export class ProductDetailsComponent implements OnInit {
       alert('Selected address updated in local storage!');
     }
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/default-product-image.jpg';
+    img.onerror = null;
+  }
 }
