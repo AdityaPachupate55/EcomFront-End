@@ -40,7 +40,9 @@ export class AllWatchComponent implements OnInit {
   products: Product[] = [];
   loading: boolean = false;
   error: string | null = null;
-  categoryTitle="";
+  categoryTitle = "";
+  successMessage: string = '';
+  errorMessage: string = '';
 
   categoryMap: { [key: number]: string } = {
     1: 'Digital',
@@ -107,16 +109,13 @@ export class AllWatchComponent implements OnInit {
     target.onerror = null; // Prevent infinite loop if the fallback image also fails
   }
 
-
-
   addToCart(product: Product): void {
-
-      this.cartService.addToCart(product, 1);
-      alert(`${product.id} added to cart!`);
-  }
-
-  sample(id:any):void{
-    alert(id);
+    this.cartService.addToCart(product, 1);
+    this.successMessage = `${product.name} added to cart!`;
+    // Clear message after 3 seconds
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 3000);
   }
 
   getCategoryName(categoryId: number): string {
@@ -148,5 +147,8 @@ export class AllWatchComponent implements OnInit {
       return words.slice(0, wordLimit).join(' ') + '...';
     }
     return name;
-  }
+  } 
+sample(productId: number): void {
+  console.log('Product ID:', productId);
+}
 }

@@ -26,6 +26,7 @@ export class UserManagementComponent implements OnInit {
   getUsers(): void {
     this.http.get<any[]>('https://localhost:7194/api/User').subscribe(
       (data: any) => {
+        console.log('Fetched users:', data); // Add this line to check the response data
         this.users = data;
         this.filteredUsers = data;
       },
@@ -42,10 +43,12 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  deleteUser(id: number): void {
-    this.http.delete(`https://localhost:7194/api/User/${id}`).subscribe(
+  deleteUser(userId: number): void {
+    console.log('Deleting user with userId:', userId); // Add this line to check the userId
+    this.http.delete(`https://localhost:7194/api/User/${userId}`).subscribe(
       () => {
-        this.users = this.users.filter(u => u.id !== id);
+        this.users = this.users.filter(u => u.userId !== userId);
+        this.filterUsers(); // Call filterUsers to update the filteredUsers array
       },
       (error: HttpErrorResponse) => {
         console.error('Error deleting user:', error);
