@@ -119,7 +119,7 @@ getTotal(): number {
     const userId = localStorage.getItem('userId');
     const selectedAddressStr = localStorage.getItem('selectedAddress');
     if (!userId || !selectedAddressStr) {
-      this.errorMessage = 'Please login and select a delivery address';
+      alert('Please select a delivery address');
       return;
     }
 
@@ -157,18 +157,18 @@ getTotal(): number {
         })
         .then((response) => {
           console.log('Order created successfully:', response);
-          this.successMessage = 'Order placed successfully!';
+          alert('Order placed successfully!');
           this.cartService.clearCart();
           this.router.navigate(['/order-confirmation']);
         })
         .catch((error) => {
           console.error('Error processing order:', error);
-          this.errorMessage = 'Failed to process order. Please try again.';
+          alert('Failed to process order. Please try again.');
         });
 
     } catch (error) {
       console.error('Error processing order:', error);
-      this.errorMessage = 'Error processing order. Please try again.';
+      alert('Error processing order. Please try again.');
     }
   });
  }
