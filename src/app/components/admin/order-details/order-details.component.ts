@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { catchError, throwError, forkJoin } from 'rxjs';
-
+import { NotifyService } from '../../../services/notify.service';
 interface Order {
   orderID: number;
   userID: number;
@@ -38,7 +38,8 @@ export class OrderDetailsComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private notifyService: NotifyService // Assuming notifyService is injected
   ) {}
 
   ngOnInit(): void {
@@ -86,20 +87,21 @@ export class OrderDetailsComponent implements OnInit {
 
   updateOrderStatus(orderId: number, orderStatus: string): void {
     const url = `${this.apiUrl}/${orderId}/status`;
-    const headers = this.getHeaders().set('Content-Type', 'application/json'); // Set Content-Type
+    const headers = this.getHeaders().set('Content-Type', 'application/json');
 
-    console.log('Updating order status:', { url, orderStatus }); // Debugging log
+    console.log('Updating order status:', { url, orderStatus });
 
-    this.http.put(url, JSON.stringify(orderStatus), { headers }) // Send orderStatus as JSON string
+    this.http.put(url, JSON.stringify(orderStatus), { headers })
       .pipe(catchError(this.handleError.bind(this)))
       .subscribe({
         next: () => {
           console.log('Order status updated successfully');
-          alert('Order status updated successfully');
+          this.notifyService.orderStatusUpdated();
           this.loadOrders();
         },
         error: (err) => {
           console.error('Error updating order status:', err);
+          this.notifyService.orderStatusUpdateFailed();
           this.error = 'Failed to update order status. Please check the input and try again.';
         }
       });
@@ -107,20 +109,21 @@ export class OrderDetailsComponent implements OnInit {
 
   updatePaymentStatus(orderId: number, paymentStatus: string): void {
     const url = `${this.apiUrl}/${orderId}/payment`;
-    const headers = this.getHeaders().set('Content-Type', 'application/json'); // Set Content-Type
+    const headers = this.getHeaders().set('Content-Type', 'application/json');
 
-    console.log('Updating payment status:', { url, paymentStatus }); // Debugging log
+    console.log('Updating payment status:', { url, paymentStatus });
 
-    this.http.put(url, JSON.stringify(paymentStatus), { headers }) // Send paymentStatus as JSON string
+    this.http.put(url, JSON.stringify(paymentStatus), { headers })
       .pipe(catchError(this.handleError.bind(this)))
       .subscribe({
         next: () => {
           console.log('Payment status updated successfully');
-          alert('Payment status updated successfully');
+          this.notifyService.paymentStatusUpdated();
           this.loadOrders();
         },
         error: (err) => {
           console.error('Error updating payment status:', err);
+          this.notifyService.paymentStatusUpdateFailed();
           this.error = 'Failed to update payment status. Please check the input and try again.';
         }
       });
@@ -130,21 +133,24 @@ export class OrderDetailsComponent implements OnInit {
     const url = `${this.apiUrl}/${orderId}`;
     const headers = this.getHeaders();
 
-    if (confirm('Are you sure you want to delete this order?')) {
-      this.http.delete(url, { headers })
-        .pipe(catchError(this.handleError.bind(this)))
-        .subscribe({
-          next: () => {
-            console.log('Order deleted successfully');
-            alert('Order deleted successfully');
-            this.loadOrders();
-          },
-          error: (err) => {
-            console.error('Error deleting order:', err);
-            this.error = 'Failed to delete order. Please try again.';
-          }
-        });
-    }
+    this.notifyService.confirmDeleteOrder().then((confirmed) => {
+      if (confirmed) {
+        this.http.delete(url, { headers })
+          .pipe(catchError(this.handleError.bind(this)))
+          .subscribe({
+            next: () => {
+              console.log('Order deleted successfully');
+              this.notifyService.orderDeleted();
+              this.loadOrders();
+            },
+            error: (err) => {
+              console.error('Error deleting order:', err);
+              this.notifyService.orderDeletionFailed();
+              this.error = 'Failed to delete order. Please try again.';
+            }
+          });
+      }
+    });
   }
 
   saveChanges(order: Order): void {

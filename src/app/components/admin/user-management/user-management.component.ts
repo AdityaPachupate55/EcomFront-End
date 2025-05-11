@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
+import { NotifyService } from '../../../services/notify.service';
 
 @Component({
   selector: 'app-user-management',
@@ -17,7 +18,10 @@ export class UserManagementComponent implements OnInit {
   searchTerm: string = '';
   selectedRole: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private notifyService: NotifyService
+  ) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -44,15 +48,23 @@ export class UserManagementComponent implements OnInit {
   }
 
   deleteUser(userId: number): void {
-    console.log('Deleting user with userId:', userId); // Add this line to check the userId
-    this.http.delete(`https://localhost:7194/api/User/${userId}`).subscribe(
-      () => {
-        this.users = this.users.filter(u => u.userId !== userId);
-        this.filterUsers(); // Call filterUsers to update the filteredUsers array
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error deleting user:', error);
+    const user = this.users.find(u => u.userId === userId);
+    if (!user) return;
+
+    this.notifyService.confirmDeleteUser(user.name).then((confirmed) => {
+      if (confirmed) {
+        this.http.delete(`https://localhost:7194/api/User/${userId}`).subscribe({
+          next: () => {
+            this.users = this.users.filter(u => u.userId !== userId);
+            this.filterUsers();
+            this.notifyService.userDeleted();
+          },
+          error: (error: HttpErrorResponse) => {
+            console.error('Error deleting user:', error);
+            this.notifyService.userDeletionFailed();
+          }
+        });
       }
-    );
+    });
   }
 }

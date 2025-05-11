@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../../layout/header/header.component";
-// import { firstValueFrom } from 'rxjs';
+import { NotifyService } from '../../services/notify.service';
 
 interface CartPostItem {
   cartItemID: number;
@@ -36,7 +36,8 @@ export class CarttableChecktoproceedComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private notifyService: NotifyService
   ) {}
 
   ngOnInit(): void {
@@ -111,15 +112,14 @@ getTotal(): number {
  confirmOrder(): void {
   this.authService.isLoggedIn$.subscribe(isLoggedIn => {
     if (!isLoggedIn) {
-      alert('Please login to place an order');
-      this.router.navigate(['/user-login']);
+      this.notifyService.userNotLoggedIn();
       return;
     }
 
     const userId = localStorage.getItem('userId');
     const selectedAddressStr = localStorage.getItem('selectedAddress');
     if (!userId || !selectedAddressStr) {
-      alert('Please select a delivery address');
+      this.notifyService.addressRequired();
       return;
     }
 
@@ -134,7 +134,7 @@ getTotal(): number {
           productId: item.id,
           userId: parseInt(userId),
           quantity: item.quantity,
-          isActive: false, // This will be stored as 0 in SQL bit field
+          isActive: false,
           updatedAt: new Date().toISOString(),
           totalPrice: Math.round(item.price * item.quantity)
         };
@@ -157,18 +157,18 @@ getTotal(): number {
         })
         .then((response) => {
           console.log('Order created successfully:', response);
-          alert('Order placed successfully!');
+          this.notifyService.orderPlacedSuccess();
           this.cartService.clearCart();
           this.router.navigate(['/order-confirmation']);
         })
         .catch((error) => {
           console.error('Error processing order:', error);
-          alert('Failed to process order. Please try again.');
+          this.notifyService.orderProcessingFailed();
         });
 
     } catch (error) {
       console.error('Error processing order:', error);
-      alert('Error processing order. Please try again.');
+      this.notifyService.orderProcessingFailed();
     }
   });
  }

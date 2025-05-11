@@ -7,6 +7,7 @@ import { CartService, CartItem } from '../../services/cart.service'
 import { HeaderComponent } from "../../layout/header/header.component";
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { NotifyService } from '../../services/notify.service';
 
 @Component({
   selector: 'app-cart',
@@ -24,7 +25,8 @@ export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notifyService: NotifyService
   ) {}
 
   ngOnInit(): void {
@@ -69,17 +71,21 @@ export class CartComponent implements OnInit {
   }
 
   removeItem(item: CartItem): void {
-    const userConfirmed = window.confirm(`Remove ${item.name} from cart?`);
-    if (userConfirmed) {
-      this.cartService.removeFromCart(item.id);
-    }
+    this.notifyService.confirmRemoveItem(item.name).then((confirmed) => {
+      if (confirmed) {
+        this.cartService.removeFromCart(item.id);
+        this.notifyService.itemRemoved(item.name);
+      }
+    });
   }
 
   clearCart(): void {
-    const userConfirmed = window.confirm('Are you sure you want to clear your cart?');
-    if (userConfirmed) {
-      this.cartService.clearCart();
-    }
+    this.notifyService.confirmClearCart().then((confirmed) => {
+      if (confirmed) {
+        this.cartService.clearCart();
+        this.notifyService.cartCleared();
+      }
+    });
   }
 
   categoryMap: { [key: number]: string } = {
@@ -95,7 +101,8 @@ export class CartComponent implements OnInit {
   proceedToCheckout(): void {
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
       if (!isLoggedIn) {
-        this.router.navigate(['/user-login']);
+        this.notifyService.userNotLoggedIn();
+        // this.router.navigate(['/user-login']);
       } else {
         this.router.navigate(['/app-carttable-checktoproceed']);
       }

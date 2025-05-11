@@ -165,4 +165,405 @@ export class NotifyService {
     });
   }
 
+  confirmClearCart(): Promise<boolean> {
+    return Swal.fire({
+      title: 'Clear Cart?',
+      text: 'Are you sure you want to remove all items from your cart?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, clear it!',
+      cancelButtonText: 'No, keep it',
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Cart Cleared!',
+          text: 'Your cart has been emptied.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        return true;
+      }
+      return false;
+    });
+  }
+
+  cartCleared() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Cart cleared successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  confirmRemoveItem(itemName: string): Promise<boolean> {
+    return Swal.fire({
+      title: 'Remove Item?',
+      text: `Are you sure you want to remove ${itemName} from your cart?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'No, keep it',
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    }).then((result) => result.isConfirmed);
+  }
+
+  itemRemoved(itemName: string) {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: `${itemName} removed from cart`,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  paymentStatusUpdated() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Payment status updated successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  paymentStatusUpdateFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to update payment status',
+      text: 'Please check the input and try again',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  orderStatusUpdated() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Order status updated successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  orderStatusUpdateFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to update order status',
+      text: 'Please check the input and try again',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  confirmDeleteOrder(): Promise<boolean> {
+    return Swal.fire({
+      title: 'Delete Order?',
+      text: 'Are you sure you want to delete this order? This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    }).then((result) => result.isConfirmed);
+  }
+
+  orderDeleted() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Order deleted successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  orderDeletionFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to delete order',
+      text: 'Please try again',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  confirmDeleteProduct(productName: string): Promise<boolean> {
+    return Swal.fire({
+      title: 'Delete Product?',
+      text: `Are you sure you want to delete ${productName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    }).then((result) => result.isConfirmed);
+  }
+
+  productDeleted() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Product deleted successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  productAdded() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Product added successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  productUpdated() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Product updated successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  operationFailed(operation: string, error: string) {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: `Failed to ${operation}`,
+      text: error,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  confirmDeleteUser(userName: string): Promise<boolean> {
+    return Swal.fire({
+      title: 'Delete User?',
+      text: `Are you sure you want to delete ${userName}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete user',
+      cancelButtonText: 'Cancel',
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      },
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    }).then((result) => result.isConfirmed);
+  }
+
+  userDeleted() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'User deleted successfully',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  userDeletionFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to delete user',
+      text: 'Please try again later',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  orderPlacedSuccess() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'success',
+      timerProgressBar: true,
+      title: 'Order placed successfully!',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  orderProcessingFailed() {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      icon: 'error',
+      timerProgressBar: true,
+      title: 'Failed to process order',
+      text: 'Please try again',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+  }
+
+  addressRequired() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Address Required',
+      text: 'Please select a delivery address',
+      confirmButtonColor: '#3085d6',
+      background: '#fff',
+      customClass: {
+        popup: 'modern-popup rounded-popup'
+      }
+    });
+  }
 }

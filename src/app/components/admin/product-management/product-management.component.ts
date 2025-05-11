@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
+import { NotifyService } from '../../../services/notify.service';
 
 @Component({
   selector: 'app-product-management',
@@ -30,7 +31,11 @@ export class ProductManagementComponent implements OnInit {
   showAddProductForm: boolean = false; // Control form visibility
   selectedProduct: any = null; // Track the selected product for editing
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {
+  constructor(
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private notifyService: NotifyService
+  ) {
     this.addProductForm = this.fb.group({
       name: ['', Validators.required],
       brand: ['', Validators.required],
@@ -88,26 +93,24 @@ export class ProductManagementComponent implements OnInit {
     if (this.addProductForm.valid) {
       const productData = this.addProductForm.value;
 
-      this.http.post('https://localhost:7194/api/Product', productData).subscribe(
-        (data: any) => {
+      this.http.post('https://localhost:7194/api/Product', productData).subscribe({
+        next: (data: any) => {
           console.log('Product added successfully:', data);
           this.products.push(data);
           this.showAddProductForm = false;
           this.addProductForm.reset();
-          this.refreshProductList(); // Refresh the product list
+          this.notifyService.productAdded();
+          this.refreshProductList();
 
-          // Upload the image if selected
           if (this.selectedFile) {
             this.uploadProductImage(data.id);
           }
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           console.error('Error adding product:', error);
-          if (error.status === 400) {
-            console.error('Bad Request:', error.error);
-          }
+          this.notifyService.operationFailed('add product', 'Please check your input and try again');
         }
-      );
+      });
     }
   }
 
@@ -115,25 +118,26 @@ export class ProductManagementComponent implements OnInit {
     if (this.editProductForm.valid) {
       const productData = this.editProductForm.value;
 
-      this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe(
-        (data: any) => {
-          console.log('Product updated successfully:', data); // Add logging
+      this.http.put(`https://localhost:7194/api/Product/${productData.id}`, productData).subscribe({
+        next: (data: any) => {
+          console.log('Product updated successfully:', data);
           const index = this.products.findIndex(p => p.id === productData.id);
           if (index !== -1) {
             this.products[index] = data;
           }
-          this.selectedProduct = null; // Clear selected product after updating
-          this.refreshProductList(); // Refresh the product list
+          this.selectedProduct = null;
+          this.notifyService.productUpdated();
+          this.refreshProductList();
 
-          // Upload the image if selected
           if (this.selectedFile) {
             this.uploadProductImage(productData.id);
           }
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           console.error('Error updating product:', error);
+          this.notifyService.operationFailed('update product', 'Please check your input and try again');
         }
-      );
+      });
     }
   }
 
@@ -177,15 +181,24 @@ export class ProductManagementComponent implements OnInit {
   }
 
   deleteProduct(id: number) {
-    this.http.delete(`https://localhost:7194/api/Product/${id}`).subscribe(
-      () => {
-        this.products = this.products.filter(p => p.id !== id);
-        this.refreshProductList(); // Refresh the product list
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error deleting product:', error);
+    const product = this.products.find(p => p.id === id);
+    if (!product) return;
+
+    this.notifyService.confirmDeleteProduct(product.name).then((confirmed) => {
+      if (confirmed) {
+        this.http.delete(`https://localhost:7194/api/Product/${id}`).subscribe({
+          next: () => {
+            this.products = this.products.filter(p => p.id !== id);
+            this.notifyService.productDeleted();
+            this.refreshProductList();
+          },
+          error: (error: HttpErrorResponse) => {
+            console.error('Error deleting product:', error);
+            this.notifyService.operationFailed('delete product', 'Please try again later');
+          }
+        });
       }
-    );
+    });
   }
 
   getProductsByCategory(event: Event) {
