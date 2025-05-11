@@ -34,13 +34,13 @@ export class ProductService {
     private router: Router
   ) {}
 
-  private getHeaders(): HttpHeaders {
+  private getHeaders(requireAuth: boolean = true): HttpHeaders {
     const token = localStorage.getItem('user_token');
-    if (!token) {
+    if (requireAuth && !token) {
       this.router.navigate(['/user-login']);
       return new HttpHeaders();
     }
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : new HttpHeaders();
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -60,7 +60,7 @@ export class ProductService {
   }
 
   getProductById(id: number): Observable<Product> {
-    const headers = this.getHeaders();
+    const headers = this.getHeaders(false); // Allow unauthenticated requests
     return this.http.get<Product>(`${this.apiUrl}/${id}`, { headers })
       .pipe(catchError(this.handleError.bind(this)));
   }

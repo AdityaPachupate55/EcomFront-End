@@ -80,7 +80,6 @@ export class CartService {
   }
 
   addToCart(product: Product, quantity: number = 1): void {
-    const headers = this.getHeaders();
     const currentCart = this.cartSubject.value;
     const existingItem = currentCart.find(item => item.id === product.id);
 
@@ -108,10 +107,14 @@ export class CartService {
 
     this.saveCartToStorage(updatedCart);
 
-    // Sync with backend
-    // this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
-    //   .pipe(catchError(this.handleError.bind(this)))
-    //   .subscribe();
+    // Sync with backend only if the user is logged in
+    const token = localStorage.getItem('user_token');
+    if (token) {
+      const headers = this.getHeaders();
+      this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
+        .pipe(catchError(this.handleError.bind(this)))
+        .subscribe();
+    }
   }
 
   updateQuantity(productId: number, quantity: number): void {
@@ -156,7 +159,7 @@ export class CartService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<CartItem[]>(`${this.apiUrl}`, { headers })
       .pipe(catchError(this.handleError.bind(this)));
-  } 
+  }
 
 
   postCartItems(items: CartPostItem[]): Observable<any> {
@@ -164,20 +167,20 @@ export class CartService {
     if (!token) {
       return throwError(() => 'No authentication token found');
     }
-  
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-  
+
     // Validate the cart item before sending
     if (!this.validateCartItem(items[0])) {
       return throwError(() => 'Invalid cart data');
     }
-  
+
     // Log the exact payload being sent
     console.log('Sending payload:', JSON.stringify(items[0], null, 2));
-  
+
     // Format the data to match the API expectations
     const cartData = {
       cartItemId: 0,
@@ -189,7 +192,7 @@ export class CartService {
       updatedAt: new Date().toISOString(),
       totalPrice: items[0].totalPrice
     };
-  
+
     return this.http.post(this.apiUrl, cartData, { headers })
       .pipe(
         catchError((error: HttpErrorResponse) => {
@@ -207,10 +210,10 @@ export class CartService {
         })
       );
   }
-  
+
   private validateCartItem(item: CartPostItem): boolean {
     if (!item) return false;
-  
+
     return (
       typeof item.productId === 'number' && item.productId > 0 &&
       typeof item.userId === 'number' && item.userId > 0 &&

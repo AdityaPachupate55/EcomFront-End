@@ -21,7 +21,7 @@ import { OrderDetailsComponent } from './components/admin/order-details/order-de
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
- 
+
   { path: 'analogue', component: AnalogueComponent },
   { path: 'smart', component: SmartComponent },
   { path: 'digital', component: DigitalComponent },
@@ -31,7 +31,7 @@ export const routes: Routes = [
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'user-register', component: UserRegisterComponent },
   { path: 'product-details/:id', component: ProductDetailsComponent },
-  {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent},  
+  {path:'app-carttable-checktoproceed',component:CarttableChecktoproceedComponent},
   {
     path:'admin-user-dashboard', component:UserManagementComponent
   },

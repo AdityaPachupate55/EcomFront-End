@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from "../../layout/header/header.component";
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 interface Product {
   id: number;
@@ -47,11 +48,12 @@ export class ProductDetailsComponent implements OnInit {
   private addressApiUrl = 'https://localhost:7194/api/Address'; // Replace with your API endpoint
 
   constructor(
-    private route: ActivatedRoute,
     @Inject(ProductService) private productService: ProductService,
+    private route: ActivatedRoute,
     private cartService: CartService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -69,18 +71,23 @@ export class ProductDetailsComponent implements OnInit {
 
   getProductDetails(productId: number): void {
     console.log('Fetching product details for ID:', productId); // Debugging
-    this.productService.getProductById(productId).subscribe((data: Product) => {
-      this.product = data;
-      console.log('Product Details:', this.product); // Debugging
+    this.productService.getProductById(productId).subscribe({
+      next: (data: Product) => {
+        this.product = data;
+        console.log('Product Details:', this.product); // Debugging
+      },
+      error: (err) => {
+        console.error('Error fetching product details:', err);
+        alert('Failed to fetch product details. Please try again.');
+      }
     });
   }
 
   fetchAddresses(): void {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('Please login first.');
-      this.router.navigate(['/login']);
-      return;
+      console.log('User not logged in. Skipping address fetch.');
+      return; // Do not fetch addresses if the user is not logged in
     }
 
     this.http.get<any[]>(`${this.addressApiUrl}/user/${userId}`).subscribe({
@@ -109,7 +116,6 @@ export class ProductDetailsComponent implements OnInit {
 
   addToCart(): void {
     this.cartService.addToCart(this.product, this.quantity);
-    alert(`${this.quantity} ${this.product.name} added to cart!`);
   }
 
   buyNow(): void {

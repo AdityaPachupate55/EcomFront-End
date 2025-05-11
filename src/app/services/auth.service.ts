@@ -77,7 +77,7 @@ export class AuthService {
         // Decode the JWT token and store the user details
         this.userDetails = decodeJwtToken(token);
         console.log('Decoded User Details:', this.userDetails);
-        
+
         // Store user ID using the 'id' claim from the token
         if (this.userDetails && this.userDetails.id) {
           localStorage.setItem('userId', this.userDetails.id);
@@ -133,7 +133,7 @@ export class AuthService {
     localStorage.removeItem('admin_token');
     localStorage.removeItem('userId');
     localStorage.removeItem('userRole');
-  
+    localStorage.removeItem('selectedAddress'); // Remove selected address from local storage
     // Remove any address stored for the user
     if (userId) {
       localStorage.removeItem(`address_${userId}`);
