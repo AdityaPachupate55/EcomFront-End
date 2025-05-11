@@ -62,9 +62,12 @@ export const routes: Routes = [
   },
   { path: 'user-profile', component: UserProfileComponent },
   {path:'cart-details',component:CartdetailsComponent},
-  { path: '', redirectTo: '/app-home', pathMatch: 'full' }, 
+  { path: '', redirectTo: '/app-home', pathMatch: 'full' },
   {
     path:'app-order-conformation',
     component:OrderConformationComponent
+  },
+  {
+    path: 'order-confirmation', component:OrderConformationComponent
   }
 ];

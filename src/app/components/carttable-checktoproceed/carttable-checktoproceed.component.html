@@ -32,19 +32,23 @@
         <div class="summary-details">
           <div class="summary-row">
             <span>Subtotal</span>
-            <span>₹{{getSubtotal().toFixed(2)}}</span>
+            <span>₹{{cartTotal.toFixed(2)}}</span>
           </div>
           <div class="summary-row">
             <span>Shipping</span>
-            <span>Free</span>
+            <span>₹{{shipping.toFixed(2)}}</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (8%)</span>
+            <span>₹{{tax.toFixed(2)}}</span>
           </div>
           <div class="summary-total">
             <span>Total</span>
-            <span>₹{{getTotal().toFixed(2)}}</span>
+            <span>₹{{orderTotal.toFixed(2)}}</span>
           </div>
         </div>
-        
-        <button class="btn-confirm" (click)="confirmOrder()" routerLink="/app-order-conformation">
+
+        <button class="btn-confirm" (click)="confirmOrder()">
           <i class="fas fa-check-circle"></i>
           Place Order
         </button>

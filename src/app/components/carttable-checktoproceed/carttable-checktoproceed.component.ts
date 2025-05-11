@@ -26,7 +26,11 @@ interface CartPostItem {
 })
 export class CarttableChecktoproceedComponent implements OnInit {
   cartItems: CartItem[] = [];
-  totalItems: number = 0;
+  cartTotal = 0;
+  shipping = 40.00; // Fixed shipping cost
+  tax = 0;
+  orderTotal = 0;
+  totalItems = 0; // Add this line
   orderConfirmed: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
@@ -43,7 +47,7 @@ export class CarttableChecktoproceedComponent implements OnInit {
     this.cartService.cart$.subscribe(cart => {
       this.cartItems = cart;
       this.totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      this.proceedToCheckout();
+      this.calculateTotals();
     });
   }
 
@@ -102,74 +106,97 @@ export class CarttableChecktoproceedComponent implements OnInit {
       });
     });
   }
- getSubtotal(): number {
+
+  calculateTotals(): void {
+    // Calculate subtotal
+    this.cartTotal = this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+    // Fixed shipping cost
+    this.shipping = 10.00;
+
+    // Calculate tax (8%)
+    this.tax = this.cartTotal * 0.08;
+
+    // Calculate order total
+    this.orderTotal = this.cartTotal + this.shipping + this.tax;
+  }
+
+  getShippingCost(): number {
+    return this.shipping;
+  }
+
+  getSubtotal(): number {
     return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   }
-getTotal(): number {
-    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  getTotal(): number {
+    return this.cartTotal + this.getShippingCost() + this.tax;
   }
- confirmOrder(): void {
-  this.authService.isLoggedIn$.subscribe(isLoggedIn => {
-    if (!isLoggedIn) {
-      this.notifyService.userNotLoggedIn();
-      return;
-    }
 
-    const userId = localStorage.getItem('userId');
-    const selectedAddressStr = localStorage.getItem('selectedAddress');
-    if (!userId || !selectedAddressStr) {
-      this.notifyService.addressRequired();
-      return;
-    }
+  confirmOrder(): void {
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      if (!isLoggedIn) {
+        this.notifyService.userNotLoggedIn();
+        return;
+      }
 
-    try {
-      const selectedAddress = JSON.parse(selectedAddressStr);
-      const formattedAddress = `${selectedAddress.addressLine1}, ${selectedAddress.addressLine2}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.country} - ${selectedAddress.postalCode}`;
+      const userId = localStorage.getItem('userId');
+      const selectedAddressStr = localStorage.getItem('selectedAddress');
+      if (!userId || !selectedAddressStr) {
+        this.notifyService.addressRequired();
+        return;
+      }
 
-      // First update all cart items to inactive
-      const updatePromises = this.cartItems.map(item => {
-        const updateData = {
-          cartItemID: item.id,
-          productId: item.id,
-          userId: parseInt(userId),
-          quantity: item.quantity,
-          isActive: false,
-          updatedAt: new Date().toISOString(),
-          totalPrice: Math.round(item.price * item.quantity)
-        };
-        return this.http.put(`https://localhost:7194/api/Cart/${item.id}`, updateData).toPromise();
-      });
+      try {
+        const selectedAddress = JSON.parse(selectedAddressStr);
+        const formattedAddress = `${selectedAddress.addressLine1}, ${selectedAddress.addressLine2}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.country} - ${selectedAddress.postalCode}`;
 
-      // After all cart items are updated, create the order
-      Promise.all(updatePromises)
-        .then(() => {
-          const orderData = {
-            orderID: 0,
-            userID: parseInt(userId),
-            totalPrice: this.getTotal(),
-            shippingAddress: formattedAddress,
-            orderStatus: "Pending",
-            paymentStatus: "Unpaid"
+        // First update all cart items to inactive
+        const updatePromises = this.cartItems.map(item => {
+          const updateData = {
+            cartItemID: item.id,
+            productId: item.id,
+            userId: parseInt(userId),
+            quantity: item.quantity,
+            isActive: false,
+            updatedAt: new Date().toISOString(),
+            totalPrice: Math.round(item.price * item.quantity)
           };
-
-          return this.http.post('https://localhost:7194/api/Orders', orderData).toPromise();
-        })
-        .then((response) => {
-          console.log('Order created successfully:', response);
-          this.notifyService.orderPlacedSuccess();
-          this.cartService.clearCart();
-          this.router.navigate(['/order-confirmation']);
-        })
-        .catch((error) => {
-          console.error('Error processing order:', error);
-          this.notifyService.orderProcessingFailed();
+          return this.http.put(`https://localhost:7194/api/Cart/${item.id}`, updateData).toPromise();
         });
 
-    } catch (error) {
-      console.error('Error processing order:', error);
-      this.notifyService.orderProcessingFailed();
-    }
-  });
- }
+        // After all cart items are updated, create the order
+        Promise.all(updatePromises)
+          .then(() => {
+            const orderData = {
+              orderID: 0,
+              userID: parseInt(userId),
+              totalPrice: this.getTotal(),
+              subtotal: this.cartTotal,
+              shippingCost: this.getShippingCost(),
+              tax: this.tax,
+              shippingAddress: formattedAddress,
+              orderStatus: "Pending",
+              paymentStatus: "Unpaid"
+            };
 
+            return this.http.post('https://localhost:7194/api/Orders', orderData).toPromise();
+          })
+          .then((response) => {
+            console.log('Order created successfully:', response);
+            this.notifyService.orderPlacedSuccess();
+            this.cartService.clearCart();
+            this.router.navigate(['/order-confirmation']);
+          })
+          .catch((error) => {
+            console.error('Error processing order:', error);
+            this.notifyService.orderProcessingFailed();
+          });
+
+      } catch (error) {
+        console.error('Error processing order:', error);
+        this.notifyService.orderProcessingFailed();
+      }
+    });
+  }
 }
