@@ -18,6 +18,7 @@ import { CarttableChecktoproceedComponent } from './components/carttable-checkto
 import { UserManagementComponent } from './components/admin/user-management/user-management.component';
 import { CartdetailsComponent } from './components/admin/cartdetails/cartdetails.component';
 import { OrderDetailsComponent } from './components/admin/order-details/order-details.component';
+import { OrderConformationComponent } from './components/order-conformation/order-conformation.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -61,5 +62,9 @@ export const routes: Routes = [
   },
   { path: 'user-profile', component: UserProfileComponent },
   {path:'cart-details',component:CartdetailsComponent},
-  { path: '', redirectTo: '/app-home', pathMatch: 'full' },
+  { path: '', redirectTo: '/app-home', pathMatch: 'full' }, 
+  {
+    path:'app-order-conformation',
+    component:OrderConformationComponent
+  }
 ];

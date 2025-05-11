@@ -34,15 +34,12 @@
         <div class="product-info">
           <h3>{{ truncateName(product.name) }}</h3>
           <span class="product-category">{{ getCategoryName(product.categoryId) }}</span>
-          <span class="product-price">{{ product.price.toFixed(2) }}</span>
+          <span class="product-price">₹{{ product.price.toFixed(2) }}</span>
 
           <div class="product-actions">
-
-            <a [routerLink]="['/product-details', product.id]" (click)="sample(product.id)" routerLinkActive="router-link-active"  class="btn btn-primary">View Details</a>
+            <a [routerLink]="['/product-details', product.id]" (click)="sample(product.id)" routerLinkActive="router-link-active" class="btn btn-primary">View Details</a>
             <a (click)="addToCart(product)" class="btn btn-primary">Add to Cart</a>
-
           </div>
-
         </div>
       </div>
     </div>

@@ -175,4 +175,10 @@ export class ProductDetailsComponent implements OnInit {
       this.notifyService.addressRequired();
     }
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/default-product-image.jpg';
+    img.onerror = null;
+  }
 }

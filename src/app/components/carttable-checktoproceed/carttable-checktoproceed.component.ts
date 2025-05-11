@@ -3,8 +3,7 @@ import { CartService, CartItem } from '../../services/cart.service';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { HeaderComponent } from "../../layout/header/header.component";
 import { NotifyService } from '../../services/notify.service';
 
@@ -23,7 +22,7 @@ interface CartPostItem {
   selector: 'app-carttable-checktoproceed',
   templateUrl: './carttable-checktoproceed.component.html',
   styleUrls: ['./carttable-checktoproceed.component.css'],
-  imports: [CommonModule, HeaderComponent]
+  imports: [CommonModule, HeaderComponent , RouterLinkActive , RouterLink]
 })
 export class CarttableChecktoproceedComponent implements OnInit {
   cartItems: CartItem[] = [];

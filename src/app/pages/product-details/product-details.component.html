@@ -2,7 +2,13 @@
 <div *ngIf="product" class="product-details-container">
   <!-- Image Section -->
   <div class="image-section">
-    <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
+    <img 
+      *ngIf="product.imageUrl"
+      [src]="product.imageUrl.startsWith('http') ? product.imageUrl : 'https://localhost:7194/' + product.imageUrl.replace('wwwroot/', '')"
+      alt="{{ product.name }}"
+      class="product-image"
+      (error)="onImageError($event)"
+    />
   </div>
 
   <!-- Details Section -->

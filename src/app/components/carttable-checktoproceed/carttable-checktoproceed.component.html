@@ -16,10 +16,10 @@
           <div class="product-info">
             <h3>{{item.name}}</h3>
             <div class="price-info">
-              <p class="product-price">${{item.price.toFixed(2)}}</p>
+              <p class="product-price">₹{{item.price.toFixed(2)}}</p>
               <p class="product-quantity">Qty: {{item.quantity}}</p>
             </div>
-            <p class="product-subtotal">Subtotal: ${{(item.price * item.quantity).toFixed(2)}}</p>
+            <p class="product-subtotal">Subtotal: ₹{{(item.price * item.quantity).toFixed(2)}}</p>
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
         <div class="summary-details">
           <div class="summary-row">
             <span>Subtotal</span>
-            <span>${{getSubtotal().toFixed(2)}}</span>
+            <span>₹{{getSubtotal().toFixed(2)}}</span>
           </div>
           <div class="summary-row">
             <span>Shipping</span>
@@ -40,11 +40,11 @@
           </div>
           <div class="summary-total">
             <span>Total</span>
-            <span>${{getTotal().toFixed(2)}}</span>
+            <span>₹{{getTotal().toFixed(2)}}</span>
           </div>
         </div>
         
-        <button class="btn-confirm" (click)="confirmOrder()">
+        <button class="btn-confirm" (click)="confirmOrder()" routerLink="/app-order-conformation">
           <i class="fas fa-check-circle"></i>
           Place Order
         </button>
