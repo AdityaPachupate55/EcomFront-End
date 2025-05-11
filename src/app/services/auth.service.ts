@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { decodeJwtToken } from '../utils/jwt-utils';
 import { CartService } from './cart.service';
+import { NotifyService } from './notify.service';
 
 interface UserRegister {
   name: string;
@@ -30,7 +31,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private notifyService: NotifyService
   ) {}
 
   user : UserRegister = {
@@ -57,12 +59,12 @@ export class AuthService {
             password: '',
             phone: ''
           };
-          alert('Registration successful!');
+          this.notifyService.successRegistration(); // Notify user of successful registration
           this.router.navigate(['/user-login']); // Add navigation to login
         },
         error: (error) => {
           console.error('Registration failed', error);
-          alert('Registration failed. Please try again.');
+          this.notifyService.errorRegistration(); // Notify user of failed registration
         }
       });
   }
@@ -91,12 +93,12 @@ export class AuthService {
         }
 
         this.isLoggedInSubject.next(true);
-        alert('Login successful!');
+        this.notifyService.successLogin(); // Notify user of successful login
         this.router.navigate(['/']);
       },
       (error) => {
         console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
+        this.notifyService.errorLogin(); // Notify user of failed login
       }
     );
   }
@@ -114,13 +116,13 @@ export class AuthService {
         console.log('Decoded Admin Details:', this.adminDetails);
 
         this.isLoggedInSubject.next(true); // Update login status
-        alert('Admin logged in successfully!');
+        this.notifyService.successLogin(); // Notify user of successful login
         // Navigate to admin dashboard or home page
         this.router.navigate(['/admin-dashboard']);
       },
       (error) => {
         console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
+        this.notifyService.errorLogin(); // Notify user of failed login
       }
     );
   }
@@ -143,7 +145,7 @@ export class AuthService {
     this.adminDetails = null;
     this.isLoggedInSubject.next(false);
     this.cartService.clearCart(); // Clear the cart on logout
-    alert('Logout successful!');
+    this.notifyService.succesLogout(); // Notify user of successful logout
     this.router.navigate(['/']);
   }
 

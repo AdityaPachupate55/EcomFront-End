@@ -1,6 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 /* @import "tailwindcss"; */
 
+
+
+/* notify style */
+.modern-popup {
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(48, 133, 214, 0.3);
+  background: linear-gradient(135deg, #2575c5, #1565b5);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(48, 133, 214, 0.2);
+}
+
 /* Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap');
 

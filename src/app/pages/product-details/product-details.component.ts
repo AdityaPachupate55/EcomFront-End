@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from "../../layout/header/header.component";
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { NotifyService } from '../../services/notify.service';
 
 interface Product {
   id: number;
@@ -53,7 +54,8 @@ export class ProductDetailsComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private notifyService: NotifyService
   ) {}
 
   ngOnInit(): void {
@@ -134,7 +136,7 @@ export class ProductDetailsComponent implements OnInit {
   submitAddress(): void {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('Please login first.');
+      this.notifyService.userNotLoggedIn(); // Notify user to login
       this.router.navigate(['/login']);
       return;
     }
