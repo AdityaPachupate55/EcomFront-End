@@ -19,9 +19,7 @@ export interface CartPostItem {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  totalPrice: number;
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +80,7 @@ export class CartService {
   }
 
   addToCart(product: Product, quantity: number = 1): void {
+    // Update local cart
     const currentCart = this.cartSubject.value;
     const existingItem = currentCart.find(item => item.id === product.id);
 
@@ -102,20 +101,44 @@ export class CartService {
         ...product,
         quantity,
         subtotal: quantity * product.price,
-        stock: product.quantity // Using product quantity as stock
+        stock: product.quantity
       };
       updatedCart = [...currentCart, newItem];
     }
 
     this.saveCartToStorage(updatedCart);
     this.notifyService.addedToCart();
-    // Sync with backend only if the user is logged in
+
+    // Sync with backend
     const token = localStorage.getItem('user_token');
-    if (token) {
-      const headers = this.getHeaders();
-      this.http.post(`${this.apiUrl}/add`, { productId: product.id, quantity }, { headers })
+    const userId = localStorage.getItem('userId');
+
+    if (token && userId) {
+      const cartData = {
+        cartItemID: 0,
+        productId: product.id,
+        userId: parseInt(userId),
+        quantity: quantity,
+        isActive: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      });
+
+      this.http.post(this.apiUrl, cartData, { headers })
         .pipe(catchError(this.handleError.bind(this)))
-        .subscribe();
+        .subscribe({
+          next: (response) => {
+            console.log('Cart synced with server:', response);
+          },
+          error: (error) => {
+            console.error('Error syncing cart:', error);
+          }
+        });
     }
   }
 
@@ -163,7 +186,6 @@ export class CartService {
       .pipe(catchError(this.handleError.bind(this)));
   }
 
-
   postCartItems(items: CartPostItem[]): Observable<any> {
     const token = localStorage.getItem('user_token');
     if (!token) {
@@ -175,38 +197,28 @@ export class CartService {
       'Authorization': `Bearer ${token}`
     });
 
-    // Validate the cart item before sending
-    if (!this.validateCartItem(items[0])) {
-      return throwError(() => 'Invalid cart data');
-    }
-
-    // Log the exact payload being sent
-    console.log('Sending payload:', JSON.stringify(items[0], null, 2));
-
-    // Format the data to match the API expectations
+    // Create the cart item with the exact structure expected by the API
     const cartData = {
-      cartItemId: 0,
+      cartItemID: 0,
       productId: items[0].productId,
       userId: items[0].userId,
       quantity: items[0].quantity,
       isActive: true,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      totalPrice: items[0].totalPrice
+      updatedAt: new Date().toISOString()
     };
+
+    console.log('Sending payload:', JSON.stringify(cartData, null, 2));
 
     return this.http.post(this.apiUrl, cartData, { headers })
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('API Error:', error);
           if (error.status === 400) {
-            console.error('Validation errors:', error.error?.errors);
-            return throwError(() => 'Invalid cart data format: ' + JSON.stringify(error.error?.errors));
+            return throwError(() => 'Invalid cart data: ' + JSON.stringify(error.error));
           } else if (error.status === 401) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/user-login']);
             return throwError(() => 'Please login again');
-          } else if (error.status === 403) {
-            return throwError(() => 'Access denied');
           }
           return throwError(() => 'An error occurred while processing your request');
         })
@@ -219,8 +231,7 @@ export class CartService {
     return (
       typeof item.productId === 'number' && item.productId > 0 &&
       typeof item.userId === 'number' && item.userId > 0 &&
-      typeof item.quantity === 'number' && item.quantity > 0 &&
-      typeof item.totalPrice === 'number' && item.totalPrice >= 0
+      typeof item.quantity === 'number' && item.quantity > 0
     );
   }
 }
